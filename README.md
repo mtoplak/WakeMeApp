@@ -2,4 +2,15 @@
 
 # Development
 
-Run `npx expo start` in the root of directory to start the app.
+Install `node_modules` in the root directory.
+
+```
+yarn add
+```
+
+
+Run in the root directory to start the app.
+
+```
+npx expo start
+```
