@@ -1,13 +1,12 @@
-# WakeWise
+# WakeMeApp
 
-# Development
+## Development
 
 Install `node_modules` in the root directory.
 
 ```
 yarn add
 ```
-
 
 Run in the root directory to start the app.
 
