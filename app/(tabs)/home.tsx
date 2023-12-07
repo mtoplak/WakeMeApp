@@ -9,7 +9,7 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker as SelectPicker } from "@react-native-picker/picker";
 
-const CreateAlarmScreen = () => {
+const HomePage = () => {
   const [selectedSound, setSelectedSound] = useState("barkingCat");
   const [selectedChallenge, setSelectedChallenge] = useState("barcode");
   const [selectedTime, setSelectedTime] = useState(new Date());
@@ -28,12 +28,11 @@ const CreateAlarmScreen = () => {
   const handleSaveAlarm = () => {
     console.log("Alarm settings saved");
   };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Create Alarm</Text>
-
       <View style={styles.centeredContainer}>
+        <Text style={styles.label}>Select Challenge</Text>
+
         <DateTimePicker
           value={selectedTime}
           mode="time"
@@ -41,6 +40,7 @@ const CreateAlarmScreen = () => {
           onChange={handleTimeChange}
           minuteInterval={1}
           is24Hour={true}
+          textColor="black"
         />
 
         <View>
@@ -51,6 +51,7 @@ const CreateAlarmScreen = () => {
             onValueChange={(itemValue, itemIndex) =>
               setSelectedSound(itemValue)
             }
+            itemStyle={{ fontSize: 16 }}
           >
             <SelectPicker.Item label="Default Sound" value="defaultSound" />
             <SelectPicker.Item label="Barking Cat" value="barkingCat" />
@@ -67,6 +68,7 @@ const CreateAlarmScreen = () => {
             onValueChange={(itemValue, itemIndex) =>
               setSelectedChallenge(itemValue)
             }
+            itemStyle={{ fontSize: 16 }}
           >
             <SelectPicker.Item label="Riddle Challenge" value="riddle" />
             <SelectPicker.Item label="Barcode Scan" value="barcode" />
@@ -85,7 +87,7 @@ const CreateAlarmScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    alignItems: "center",
     justifyContent: "center",
   },
   centeredContainer: {
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 40,
     fontWeight: "bold",
-    marginTop: 70,
+    marginTop: 10,
     alignSelf: "center",
   },
   label: {
@@ -124,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateAlarmScreen;
+export default HomePage;

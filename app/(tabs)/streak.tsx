@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 
-const StreakScreen = () => {
+const Streak = () => {
   const [streakHistory, setStreakHistory] = useState([]);
 
   useEffect(() => {
@@ -52,7 +52,8 @@ const StreakScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      {/* <View style={styles.container}> */}
       <Text style={styles.heading}>Streak Counter</Text>
 
       <FlatList
@@ -70,6 +71,7 @@ const StreakScreen = () => {
       />
 
       <Text style={styles.streakMessage}>{getCurrentStreakMessage()}</Text>
+      {/* </View> */}
     </View>
   );
 };
@@ -77,7 +79,6 @@ const StreakScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -106,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StreakScreen;
+export default Streak;
