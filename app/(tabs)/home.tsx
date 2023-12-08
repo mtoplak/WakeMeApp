@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker as SelectPicker } from "@react-native-picker/picker";
+import Database from "../../database";
+import { ScrollView } from "react-native-gesture-handler";
 
 const HomePage = () => {
   const [selectedSound, setSelectedSound] = useState("barkingCat");
@@ -26,61 +28,95 @@ const HomePage = () => {
   };
 
   const handleSaveAlarm = () => {
-    console.log("Alarm settings saved");
+    console.log(selectedSound);
+    console.log(selectedChallenge);
+    console.log(selectedTime);
+
+    // Parse selectedTime to extract hours and minutes
+    const parsedTime = new Date(selectedTime);
+    const hours = parsedTime.getHours() + 1;
+    const minutes = parsedTime.getMinutes();
+
+    Database.add(hours, minutes, selectedSound, selectedChallenge);
   };
+
+  const scrollViewRef = useRef();
+
+  const handleScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+
+    // Check if the scroll direction is downward (offsetY is increasing)
+    if (offsetY > 0) {
+      // Allow scrolling
+      return;
+    }
+
+    // Prevent scrolling upward
+    scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: false });
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.centeredContainer}>
-        <Text style={styles.label}>Select Challenge</Text>
+    <ScrollView
+      ref={scrollViewRef}
+      contentContainerStyle={styles.scrollContainer}
+      onScroll={handleScroll}
+      scrollEventThrottle={16}
+    >
+      <View style={styles.container}>
+        <View style={styles.centeredContainer}>
+          <Text style={[styles.label, { marginTop: 10 }]}>
+            Select Challenge
+          </Text>
 
-        <DateTimePicker
-          value={selectedTime}
-          mode="time"
-          display="spinner"
-          onChange={handleTimeChange}
-          minuteInterval={1}
-          is24Hour={true}
-          textColor="black"
-        />
+          <DateTimePicker
+            value={selectedTime}
+            mode="time"
+            display="spinner"
+            onChange={handleTimeChange}
+            minuteInterval={1}
+            is24Hour={true}
+            textColor="black"
+          />
 
-        <View>
-          <Text style={styles.label}>Select Sound</Text>
-          <SelectPicker
-            ref={soundPickerRef}
-            selectedValue={selectedSound}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedSound(itemValue)
-            }
-            itemStyle={{ fontSize: 16 }}
-          >
-            <SelectPicker.Item label="Default Sound" value="defaultSound" />
-            <SelectPicker.Item label="Barking Cat" value="barkingCat" />
-            <SelectPicker.Item
-              label="Never Gonna Give You Up"
-              value="neverGonnaGiveYouUp"
-            />
-            <SelectPicker.Item label="Buzzer" value="buzzer" />
-          </SelectPicker>
-          <Text style={styles.label}>Select Challenge</Text>
-          <SelectPicker
-            ref={challengePickerRef}
-            selectedValue={selectedChallenge}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedChallenge(itemValue)
-            }
-            itemStyle={{ fontSize: 16 }}
-          >
-            <SelectPicker.Item label="Riddle Challenge" value="riddle" />
-            <SelectPicker.Item label="Barcode Scan" value="barcode" />
-            <SelectPicker.Item label="Maths Challenge" value="maths" />
-          </SelectPicker>
+          <View>
+            <Text style={styles.label}>Select Sound</Text>
+            <SelectPicker
+              ref={soundPickerRef}
+              selectedValue={selectedSound}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedSound(itemValue)
+              }
+              itemStyle={{ fontSize: 16 }}
+            >
+              <SelectPicker.Item label="Default Sound" value="defaultSound" />
+              <SelectPicker.Item label="Barking Cat" value="barkingCat" />
+              <SelectPicker.Item
+                label="Never Gonna Give You Up"
+                value="neverGonnaGiveYouUp"
+              />
+              <SelectPicker.Item label="Buzzer" value="buzzer" />
+            </SelectPicker>
+            <Text style={styles.label}>Select Challenge</Text>
+            <SelectPicker
+              ref={challengePickerRef}
+              selectedValue={selectedChallenge}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedChallenge(itemValue)
+              }
+              itemStyle={{ fontSize: 16 }}
+            >
+              <SelectPicker.Item label="Riddle Challenge" value="riddle" />
+              <SelectPicker.Item label="Barcode Scan" value="barcode" />
+              <SelectPicker.Item label="Maths Challenge" value="maths" />
+            </SelectPicker>
+          </View>
+
+          <TouchableOpacity style={styles.saveButton} onPress={handleSaveAlarm}>
+            <Text style={styles.saveButtonText}>Save Alarm</Text>
+          </TouchableOpacity>
         </View>
-
-        <TouchableOpacity style={styles.saveButton} onPress={handleSaveAlarm}>
-          <Text style={styles.saveButtonText}>Save Alarm</Text>
-        </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -118,6 +154,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+    marginBottom: 70,
   },
   saveButtonText: {
     color: "white",

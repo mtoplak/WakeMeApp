@@ -18,17 +18,24 @@ class Database {
     static createTable() {
         console.log('create db');
         db.transaction(tx => {
+            tx.executeSql("DROP TABLE IF EXISTS alarm;");
             tx.executeSql("CREATE TABLE IF NOT EXISTS alarm (id INTEGER PRIMARY KEY NOT NULL, hours TEXT, minutes TEXT, days TEXT, sound TEXT, dailyChallenge TEXT, stoppedSuccessfully INTEGER);");
             tx.executeSql("CREATE TABLE IF NOT EXISTS user (id INTEGER primary key not null, TEXT name, INTEGER streak);");
         });
     }
 
-    static add(hours: any, minutes: any) {
-        console.log('add new alarms');
+    static add(hours: any, minutes: any, sound: string, challenge: string) {
+        console.log('add new alarm');
+
         db.transaction(tx => {
-            tx.executeSql(`INSERT INTO alarm (hours, minutes, days) values ('${hours}', '${minutes}', 'null')`);
+            tx.executeSql(
+                'INSERT INTO alarm (hours, minutes, days, sound, dailyChallenge, stoppedSuccessfully) VALUES (?, ?, ?, ?, ?, ?)',
+                [hours, minutes, 'null', sound, challenge, 0]
+            );
         });
+
     }
+
 
     static getAll() {
         console.log('getting all');
@@ -36,6 +43,7 @@ class Database {
         return new Promise((resolve, reject) => db.transaction((tx) => {
             tx.executeSql(query, [], (tx, results) => {
                 resolve(JSON.stringify(results));
+                console.log(results);
             }, function (tx, error): any {
                 reject(error);
             });
