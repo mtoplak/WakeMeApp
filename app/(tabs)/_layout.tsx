@@ -13,6 +13,14 @@ export default () => {
         }}
       />
       <Tabs.Screen
+        name="alarms"
+        options={{
+          tabBarLabel: "My Alarms",
+          headerTitle: "My Alarms",
+          tabBarIcon: ({}) => <Image source={require("./alarm.png")} />,
+        }}
+      />
+      <Tabs.Screen
         name="streak"
         options={{
           tabBarLabel: "My Streak",
