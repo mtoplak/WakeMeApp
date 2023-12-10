@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 
 const Streak = () => {
-  const [streakHistory, setStreakHistory] = useState([]);
+  const [streakHistory, setStreakHistory] = useState<boolean[]>([]);
 
   useEffect(() => {
     const randomStreakHistory = Array.from(
@@ -12,7 +12,7 @@ const Streak = () => {
     setStreakHistory(randomStreakHistory);
   }, []);
 
-  const renderDayItem = ({ item, index }) => {
+  const renderDayItem = ({ item, index }: { item: any; index: number }) => {
     const dayStatus = item ? "✅" : "❌";
     const dayName = getDayName(index);
 
@@ -45,7 +45,7 @@ const Streak = () => {
     return currentStreak;
   };
 
-  const getDayName = (index) => {
+  const getDayName = (index: number) => {
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const dayIndex = (new Date().getDay() + index) % 7;
     return daysOfWeek[dayIndex];

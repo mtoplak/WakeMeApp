@@ -1,6 +1,8 @@
 import { BarCodeScanner } from "expo-barcode-scanner";
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
+import Database from "../../database";
+import { router } from "expo-router";
 
 const BarcodeChallenge = () => {
   const [remainingTime, setRemainingTime] = useState(60);
@@ -38,9 +40,11 @@ const BarcodeChallenge = () => {
   const handleBarCodeScanned = ({ type, data }: { type: any; data: any }) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    // navigate to alarms screen
+    console.log(type);
+    console.log(data);
 
-    // save to database
+    Database.updatePassed(1);
+    router.back();
   };
 
   if (hasPermission === null) {
@@ -55,7 +59,7 @@ const BarcodeChallenge = () => {
       <Text style={styles.time}>
         Remaining Time: {formatTime(remainingTime)}
       </Text>
-      <TouchableOpacity style={styles.checkA} onPress={checkAnswer}>
+      <TouchableOpacity style={styles.checkA} onPress={() => setScanned(false)}>
         <Text style={styles.button}>Scan Barcode</Text>
       </TouchableOpacity>
       <View style={styles.barcodeContainer}>

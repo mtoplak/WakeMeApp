@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import * as Notifications from "expo-notifications";
+import { StatusBar } from "expo-status-bar";
 
 function useNotificationObserver() {
   useEffect(() => {
@@ -39,26 +40,29 @@ const StackLayout = () => {
   useNotificationObserver();
 
   return (
-    <Stack>
-      <Stack.Screen
-        name="(tabs)"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="screens/AlarmScreen"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="challenges/BarcodeChallenge"
-        options={{
-          headerShown: false,
-        }}
-      />
-    </Stack>
+    <>
+      <StatusBar style="dark" />
+      <Stack>
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="screens/AlarmScreen"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="challenges/BarcodeChallenge"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack>
+    </>
   );
 };
 

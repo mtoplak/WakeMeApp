@@ -1,23 +1,30 @@
 import React from "react";
-import { View, Text, TouchableHighlight } from "react-native";
+import { View, Text, TouchableHighlight, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 
-const alarmTime = new Date();
-alarmTime.setHours(8);
-alarmTime.setMinutes(30);
-
-const formatTime = (date) => {
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  return `${hours < 10 ? "0" + hours : hours}:${
-    minutes < 10 ? "0" + minutes : minutes
-  }`;
-};
-
 const AlarmScreen = () => {
+  const alarmTime = new Date();
+  alarmTime.setHours(8);
+  alarmTime.setMinutes(30);
+
+  const formatTime = (date: Date) => {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours < 10 ? "0" + hours : hours}:${
+      minutes < 10 ? "0" + minutes : minutes
+    }`;
+  };
+
   const handleSnooze = () => {
     console.log("Snooze button pressed");
+    Alert.alert("Snooze", "You will lose your streak", [
+      {
+        text: "OK",
+        onPress: () => console.log("Cancel pressed"),
+        style: "cancel",
+      },
+    ]);
   };
 
   const handleStop = () => {

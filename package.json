@@ -6,6 +6,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "@react-native-community/datetimepicker": "6.7.3",
     "@react-native-picker/picker": "2.4.8",
     "@types/react": "~18.2.42",
@@ -18,7 +19,7 @@
     "expo-router": "^1.2.0",
     "expo-splash-screen": "~0.18.1",
     "expo-sqlite": "~11.1.1",
-    "expo-status-bar": "~1.4.2",
+    "expo-status-bar": "~1.4.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.14",

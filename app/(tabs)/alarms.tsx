@@ -16,7 +16,7 @@ const Alarms = () => {
 
   const read_db = async () => {
     try {
-      const all = await Database.getAll();
+      const all: any = await Database.getAll();
       const dbArray = JSON.parse(all).rows._array;
       setAlarms(dbArray);
     } catch (error) {
@@ -24,7 +24,7 @@ const Alarms = () => {
     }
   };
 
-  const renderRightActions = (progress, dragX, item) => {
+  const renderRightActions = (progress: any, dragX: any, item: any) => {
     const trans = dragX.interpolate({
       inputRange: [0, 50, 100, 101],
       outputRange: [-20, 0, 0, 1],
@@ -55,7 +55,7 @@ const Alarms = () => {
     );
   };
 
-  const renderAlarmItem = ({ item }) => (
+  const renderAlarmItem = ({ item }: { item: any }) => (
     <Swipeable
       renderRightActions={(progress, dragX) =>
         renderRightActions(progress, dragX, item)

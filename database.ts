@@ -33,9 +33,7 @@ class Database {
                 [hours, minutes, 'null', sound, challenge, 0]
             );
         });
-
     }
-
 
     static getAll() {
         console.log('getting all');
@@ -48,6 +46,13 @@ class Database {
                 reject(error);
             });
         }));
+    }
+
+    static updatePassed(id: number) {
+        console.log('update passed');
+        db.transaction(tx => {
+            tx.executeSql(`UPDATE alarm SET stoppedSuccessfully=1 WHERE id=${id}`);
+        });
     }
 
     static getOne(id: any) {
@@ -78,7 +83,6 @@ class Database {
         db.transaction(tx => {
             tx.executeSql(`UPDATE alarm SET days='${days}' WHERE id=${id}`);
         });
-
     }
 }
 

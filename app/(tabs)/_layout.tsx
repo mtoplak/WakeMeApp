@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { Image } from "react-native";
+import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
 
 export default () => {
   return (
@@ -9,7 +9,8 @@ export default () => {
         options={{
           tabBarLabel: "Home",
           headerTitle: "Create Alarm",
-          // tabBarIcon: ({}) => <Image source={require("./alarm.png")} />, spremeni v svg
+          tabBarActiveTintColor: "black",
+          tabBarIcon: ({}) => <Entypo name="home" size={24} color="black" />,
         }}
       />
       <Tabs.Screen
@@ -17,7 +18,8 @@ export default () => {
         options={{
           tabBarLabel: "My Alarms",
           headerTitle: "My Alarms",
-          // tabBarIcon: ({}) => <Image source={require("./alarm.png")} />, spremeni v svg
+          tabBarActiveTintColor: "black",
+          tabBarIcon: ({}) => <Ionicons name="alarm" size={24} color="black" />,
         }}
       />
       <Tabs.Screen
@@ -25,7 +27,10 @@ export default () => {
         options={{
           tabBarLabel: "My Streak",
           headerTitle: "My Streak",
-          // tabBarIcon: ({}) => <Image source={require("./streak.png")} />, spremeni v svg
+          tabBarActiveTintColor: "black",
+          tabBarIcon: ({}) => (
+            <FontAwesome5 name="fire" size={24} color="black" />
+          ),
         }}
       />
       <Tabs.Screen
@@ -33,7 +38,10 @@ export default () => {
         options={{
           tabBarLabel: "Settings",
           headerTitle: "Settings",
-          // tabBarIcon: ({}) => <Image source={require("./settings.png")} />, spremeni v svg
+          tabBarActiveTintColor: "black",
+          tabBarIcon: ({}) => (
+            <Ionicons name="settings-sharp" size={24} color="black" />
+          ),
         }}
       />
     </Tabs>

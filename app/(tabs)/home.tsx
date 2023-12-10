@@ -90,7 +90,7 @@ const HomePage = () => {
     };
   }, []);
 
-  const handleTimeChange = (event, date) => {
+  const handleTimeChange = (event: any, date: Date) => {
     if (date !== undefined) {
       setShowTimePicker(Platform.OS === "ios"); // Hide picker immediately on iOS
       setSelectedTime(date);
@@ -129,7 +129,7 @@ const HomePage = () => {
 
   const scrollViewRef = useRef();
 
-  const handleScroll = (event) => {
+  const handleScroll = (event: any) => {
     const offsetY = event.nativeEvent.contentOffset.y;
 
     // Check if the scroll direction is downward (offsetY is increasing)
@@ -145,7 +145,6 @@ const HomePage = () => {
   return (
     <ScrollView
       ref={scrollViewRef}
-      contentContainerStyle={styles.scrollContainer}
       onScroll={handleScroll}
       scrollEventThrottle={16}
     >
