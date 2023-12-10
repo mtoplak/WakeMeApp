@@ -24,16 +24,17 @@ const Alarms = () => {
     }
   };
 
-  const renderRightActions = (progress, dragX) => {
+  const renderRightActions = (progress, dragX, item) => {
     const trans = dragX.interpolate({
       inputRange: [0, 50, 100, 101],
       outputRange: [-20, 0, 0, 1],
       extrapolate: "clamp",
     });
 
-    function handleDelete(id: any): void {
-      throw new Error("Function not implemented.");
-    }
+    const handleDelete = (id: any) => {
+      Database.delete(id);
+      read_db();
+    };
 
     return (
       <RectButton
@@ -57,7 +58,7 @@ const Alarms = () => {
   const renderAlarmItem = ({ item }) => (
     <Swipeable
       renderRightActions={(progress, dragX) =>
-        renderRightActions(progress, dragX)
+        renderRightActions(progress, dragX, item)
       }
       onSwipeableRightOpen={() => console.log(item.id)}
     >
@@ -72,12 +73,16 @@ const Alarms = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <FlatList
-        data={alarms}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderAlarmItem}
-        contentContainerStyle={{ width: "100%" }}
-      />
+      {alarms.length === 0 ? (
+        <Text>You haven't set any alarms yet</Text>
+      ) : (
+        <FlatList
+          data={alarms}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderAlarmItem}
+          contentContainerStyle={{ width: "100%" }}
+        />
+      )}
     </View>
   );
 };

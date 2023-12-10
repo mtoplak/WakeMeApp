@@ -9,7 +9,7 @@ export default () => {
         options={{
           tabBarLabel: "Home",
           headerTitle: "Create Alarm",
-          tabBarIcon: ({}) => <Image source={require("./alarm.png")} />,
+          // tabBarIcon: ({}) => <Image source={require("./alarm.png")} />, spremeni v svg
         }}
       />
       <Tabs.Screen
@@ -17,7 +17,7 @@ export default () => {
         options={{
           tabBarLabel: "My Alarms",
           headerTitle: "My Alarms",
-          tabBarIcon: ({}) => <Image source={require("./alarm.png")} />,
+          // tabBarIcon: ({}) => <Image source={require("./alarm.png")} />, spremeni v svg
         }}
       />
       <Tabs.Screen
@@ -25,7 +25,7 @@ export default () => {
         options={{
           tabBarLabel: "My Streak",
           headerTitle: "My Streak",
-          tabBarIcon: ({}) => <Image source={require("./streak.png")} />,
+          // tabBarIcon: ({}) => <Image source={require("./streak.png")} />, spremeni v svg
         }}
       />
       <Tabs.Screen
@@ -33,7 +33,7 @@ export default () => {
         options={{
           tabBarLabel: "Settings",
           headerTitle: "Settings",
-          tabBarIcon: ({}) => <Image source={require("./settings.png")} />,
+          // tabBarIcon: ({}) => <Image source={require("./settings.png")} />, spremeni v svg
         }}
       />
     </Tabs>
