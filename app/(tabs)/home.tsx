@@ -19,7 +19,7 @@ Notification.setNotificationHandler({
     //console.log(notification)
     return {
       shouldPlaySound: true,
-      shouldSetBadge: false,
+      shouldSetBadge: true,
       shouldShowAlert: true,
     };
   },
@@ -42,7 +42,7 @@ const HomePage = () => {
         // define in which channel notification should be recieved there (only required for android)
         Notification.setNotificationChannelAsync("default", {
           name: "default",
-          importance: Notification.AndroidImportance.DEFAULT, //periority of notification
+          importance: Notification.AndroidImportance.DEFAULT, // priority of notification
         });
       }
       const { status } = await Notification.getPermissionsAsync();
@@ -54,7 +54,7 @@ const HomePage = () => {
         finalStatus = status;
       }
       if (finalStatus !== "granted") {
-        Alert("Permission Required", "Push notification need a permission.");
+        Alert("Permission Required", "Push notifications need a permission.");
         return;
       }
 
@@ -66,6 +66,7 @@ const HomePage = () => {
     };
     configurePushNotifications();
   }, []);
+
   useEffect(() => {
     // will excute whenever notification recieved on the device
     const subscription = Notification.addNotificationReceivedListener(
@@ -107,15 +108,18 @@ const HomePage = () => {
     const minutes = parsedTime.getMinutes();
 
     Database.add(hours, minutes, selectedSound, selectedChallenge);
-    console.log("trigged");
+    console.log("triggered");
+    console.log(`2023-12-10T${hours}:${minutes}:00`);
     Notification.scheduleNotificationAsync({
       content: {
         title: "ALARM",
         body: "Tap here to deactivate alarm and solve challenge",
         data: {
           userName: "MAC",
-          url: "AlarmScreen",
+          url: "screens/AlarmScreen",
         },
+        sound: "barkingCat.mp3",
+        badge: 1,
       },
       trigger: {
         date: new Date(`2023-12-10T${hours}:${minutes}:00`),

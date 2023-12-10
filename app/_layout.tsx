@@ -1,6 +1,5 @@
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
-import Database from "../database";
 import { router } from "expo-router";
 import * as Notifications from "expo-notifications";
 
@@ -38,7 +37,7 @@ function useNotificationObserver() {
 
 const StackLayout = () => {
   useNotificationObserver();
-  
+
   return (
     <Stack>
       <Stack.Screen
@@ -48,7 +47,13 @@ const StackLayout = () => {
         }}
       />
       <Stack.Screen
-        name="AlarmScreen"
+        name="screens/AlarmScreen"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="challenges/BarcodeChallenge"
         options={{
           headerShown: false,
         }}

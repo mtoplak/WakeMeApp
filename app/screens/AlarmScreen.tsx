@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableHighlight } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 
 const alarmTime = new Date();
 alarmTime.setHours(8);
@@ -21,6 +22,7 @@ const AlarmScreen = () => {
 
   const handleStop = () => {
     console.log("Stop button pressed");
+    router.replace("/challenges/BarcodeChallenge");
   };
 
   return (

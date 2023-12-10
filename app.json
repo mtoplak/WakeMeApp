@@ -4,7 +4,36 @@
     "web": {
       "bundler": "metro"
     },
-    "name": "tabs-app",
-    "slug": "tabs-app"
+    "name": "WakeMeApp",
+    "slug": "WakeMeApp",
+    "notification": {
+      "icon": "./assets/images/alarm.png",
+      "color": "#311b92",
+      "androidMode": "default",
+      "androidCollapsedTitle": "Updates from Colab.notes",
+      "iosDisplayInForeground": true
+    },
+    "ios": {
+      "icon": "./assets/images/alarm.png"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/alarm.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./assets/audio/barkingCat.mp3",
+            "./assets/audio/buzzer.mp3"
+          ]
+        }
+      ],
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+        }
+      ]
+    ]
   }
 }
