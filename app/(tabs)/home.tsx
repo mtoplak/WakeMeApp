@@ -42,19 +42,22 @@ const HomePage = () => {
         // define in which channel notification should be recieved there (only required for android)
         Notification.setNotificationChannelAsync("default", {
           name: "default",
-          importance: Notification.AndroidImportance.DEFAULT, // priority of notification
+          importance: Notification.AndroidImportance.DEFAULT, // notification priority
         });
       }
       const { status } = await Notification.getPermissionsAsync();
       let finalStatus = status;
 
-      // ask user for permission
+      // ask user for notification permission
       if (finalStatus !== "granted") {
         const { status } = await Notification.requestPermissionsAsync();
         finalStatus = status;
       }
       if (finalStatus !== "granted") {
-        Alert("Permission Required", "Push notifications need a permission.");
+        Alert.alert(
+          "Permission Required",
+          "Push notifications need a permission."
+        );
         return;
       }
 
@@ -104,12 +107,23 @@ const HomePage = () => {
 
     // Parse selectedTime to extract hours and minutes
     const parsedTime = new Date(selectedTime);
-    const hours = parsedTime.getHours();
-    const minutes = parsedTime.getMinutes();
+    const now = new Date();
+    let alarmDate = new Date(selectedTime);
+
+    // Check if the specified time has already passed for today
+    if (parsedTime < now) {
+      // If yes, schedule for tomorrow
+      alarmDate.setDate(now.getDate() + 1);
+    }
+
+    const hours = alarmDate.getHours();
+    const minutes = alarmDate.getMinutes();
 
     Database.add(hours, minutes, selectedSound, selectedChallenge);
     console.log("triggered");
-    console.log(`2023-12-10T${hours}:${minutes}:00`);
+    console.log(
+      `${alarmDate.toISOString().slice(0, 10)}T${hours}:${minutes}:00`
+    );
     Notification.scheduleNotificationAsync({
       content: {
         title: "ALARM",
@@ -118,11 +132,11 @@ const HomePage = () => {
           userName: "MAC",
           url: "screens/AlarmScreen",
         },
-        sound: "barkingCat.mp3",
+        sound: "barkingCat.wav",
         badge: 1,
       },
       trigger: {
-        date: new Date(`2023-12-10T${hours}:${minutes}:00`),
+        date: alarmDate,
       },
     });
   };

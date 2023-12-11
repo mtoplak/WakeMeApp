@@ -53,12 +53,18 @@ const StackLayout = () => {
           name="screens/AlarmScreen"
           options={{
             headerShown: false,
+            headerLeft: () => undefined,
+            headerBackVisible: false,
+            gestureEnabled: false,
           }}
         />
         <Stack.Screen
           name="challenges/BarcodeChallenge"
           options={{
             headerShown: false,
+            headerLeft: () => undefined,
+            headerBackVisible: false,
+            gestureEnabled: false,
           }}
         />
       </Stack>

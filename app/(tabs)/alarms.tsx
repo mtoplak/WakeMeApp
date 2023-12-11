@@ -26,8 +26,8 @@ const Alarms = () => {
 
   const renderRightActions = (progress: any, dragX: any, item: any) => {
     const trans = dragX.interpolate({
-      inputRange: [0, 50, 100, 101],
-      outputRange: [-20, 0, 0, 1],
+      inputRange: [0, 50, 100],
+      outputRange: [0, 0, 1],
       extrapolate: "clamp",
     });
 
@@ -55,34 +55,46 @@ const Alarms = () => {
     );
   };
 
-  const renderAlarmItem = ({ item }: { item: any }) => (
-    <Swipeable
-      renderRightActions={(progress, dragX) =>
-        renderRightActions(progress, dragX, item)
-      }
-      onSwipeableRightOpen={() => console.log(item.id)}
-    >
-      <View style={styles.listItem}>
-        <Text>{`Alarm name (to do) ${item.id}`}</Text>
-        <Text>{`Challenge: ${item.dailyChallenge}`}</Text>
-        <Text>{`${parseInt(item.hours)}:${parseInt(item.minutes)}`}</Text>
-        <Text>{`Sound: ${item.sound}`}</Text>
-      </View>
-    </Swipeable>
-  );
+  const renderAlarmItem = ({ item }: { item: any }) => {
+    const padNumber = (num: number) => num.toString().padStart(2, "0");
 
-  return (
+    return (
+      <Swipeable
+        renderRightActions={(progress, dragX) =>
+          renderRightActions(progress, dragX, item)
+        }
+      >
+        <View style={styles.listItem}>
+          <View style={styles.leftContainer}>
+            <Text style={styles.alarmTimeText}>
+              {`${padNumber(parseInt(item.hours))}:${padNumber(
+                parseInt(item.minutes)
+              )}`}
+            </Text>
+          </View>
+
+          <View style={styles.rightContainer}>
+            <Text>{`Alarm name (to do) ${item.id}`}</Text>
+            <Text>{`Challenge: ${item.dailyChallenge}`}</Text>
+            <Text>{`Sound: ${item.sound}`}</Text>
+          </View>
+        </View>
+      </Swipeable>
+    );
+  };
+
+  return alarms.length === 0 ? (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      {alarms.length === 0 ? (
-        <Text>You haven't set any alarms yet</Text>
-      ) : (
-        <FlatList
-          data={alarms}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderAlarmItem}
-          contentContainerStyle={{ width: "100%" }}
-        />
-      )}
+      <Text>You haven't set any alarms yet</Text>
+    </View>
+  ) : (
+    <View>
+      <FlatList
+        data={alarms}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderAlarmItem}
+        contentContainerStyle={{ width: "100%" }}
+      />
     </View>
   );
 };
@@ -90,9 +102,14 @@ const Alarms = () => {
 const styles = StyleSheet.create({
   listItem: {
     backgroundColor: "white",
-    padding: 13,
     width: "100%",
-    marginBottom: 10,
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
   },
   swipeableContainer: {
     width: "100%",
@@ -101,12 +118,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "red",
+    marginTop: 10,
   },
   actionText: {
     color: "white",
     fontSize: 16,
     backgroundColor: "transparent",
     padding: 10,
+  },
+  leftContainer: {
+    marginRight: 10,
+  },
+  alarmTimeText: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  rightContainer: {
+    flex: 1,
   },
 });
 

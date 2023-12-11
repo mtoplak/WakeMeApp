@@ -1,13 +1,22 @@
 import { BarCodeScanner } from "expo-barcode-scanner";
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Button,
+  Alert,
+  BackHandler,
+} from "react-native";
 import Database from "../../database";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 
 const BarcodeChallenge = () => {
   const [remainingTime, setRemainingTime] = useState(60);
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [scanned, setScanned] = useState(false);
+  const [isClicked, setIsClicked] = useState(true);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -42,7 +51,7 @@ const BarcodeChallenge = () => {
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     console.log(type);
     console.log(data);
-
+    Alert.alert("Barcode Scanned", "You have passed the challenge!");
     Database.updatePassed(1);
     router.back();
   };
@@ -53,21 +62,33 @@ const BarcodeChallenge = () => {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+  if (remainingTime === 0) {
+    Alert.alert("Time has expired", "Please try again tomorrow.");
+    router.back();
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.time}>
         Remaining Time: {formatTime(remainingTime)}
       </Text>
-      <TouchableOpacity style={styles.checkA} onPress={() => setScanned(false)}>
+      {!isClicked && (
+        <View style={styles.barcodeContainer}>
+          <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={styles.scanner}
+          />
+        </View>
+      )}
+      <TouchableOpacity
+        style={styles.checkA}
+        onPress={() => {
+          setScanned(false);
+          setIsClicked(false);
+        }}
+      >
         <Text style={styles.button}>Scan Barcode</Text>
       </TouchableOpacity>
-      <View style={styles.barcodeContainer}>
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={styles.scanner}
-        />
-      </View>
       {scanned && (
         <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
       )}
@@ -82,6 +103,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     marginTop: 50,
+    paddingBottom: 100,
   },
   barcodeContainer: {
     flex: 1,
@@ -89,7 +111,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
-    marginTop: 50,
+    marginTop: 80,
   },
   time: {
     fontSize: 16,
