@@ -28,8 +28,8 @@ Notification.setNotificationHandler({
 });
 
 const HomePage = () => {
-  const [selectedSound, setSelectedSound] = useState("barkingCat");
-  const [selectedChallenge, setSelectedChallenge] = useState("barcode");
+  const [selectedSound, setSelectedSound] = useState("Barking Cat");
+  const [selectedChallenge, setSelectedChallenge] = useState("Barcode");
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
 
@@ -120,7 +120,6 @@ const HomePage = () => {
     const minutes = alarmDate.getMinutes();
 
     Database.add(hours, minutes, selectedSound, selectedChallenge);
-    console.log("triggered");
     console.log(
       `${alarmDate.toISOString().slice(0, 10)}T${hours}:${minutes}:00`
     );
@@ -131,6 +130,8 @@ const HomePage = () => {
         data: {
           userName: "MAC",
           url: "screens/AlarmScreen",
+          time: hours + ":" + minutes,
+          challenge: selectedChallenge,
         },
         sound: "barkingCat.wav",
         badge: 1,
@@ -188,13 +189,13 @@ const HomePage = () => {
               }
               itemStyle={{ fontSize: 16 }}
             >
-              <SelectPicker.Item label="Default Sound" value="defaultSound" />
-              <SelectPicker.Item label="Barking Cat" value="barkingCat" />
+              <SelectPicker.Item label="Default Sound" value="Default Sound" />
+              <SelectPicker.Item label="Barking Cat" value="Barking Cat" />
               <SelectPicker.Item
                 label="Never Gonna Give You Up"
-                value="neverGonnaGiveYouUp"
+                value="Never Gonna Give You Up"
               />
-              <SelectPicker.Item label="Buzzer" value="buzzer" />
+              <SelectPicker.Item label="Buzzer" value="Buzzer" />
             </SelectPicker>
             <Text style={styles.label}>Select Challenge</Text>
             <SelectPicker
@@ -205,9 +206,9 @@ const HomePage = () => {
               }
               itemStyle={{ fontSize: 16 }}
             >
-              <SelectPicker.Item label="Riddle Challenge" value="riddle" />
-              <SelectPicker.Item label="Barcode Scan" value="barcode" />
-              <SelectPicker.Item label="Maths Challenge" value="maths" />
+              <SelectPicker.Item label="Riddle Challenge" value="Riddle" />
+              <SelectPicker.Item label="Barcode Scan" value="Barcode" />
+              <SelectPicker.Item label="Maths Challenge" value="Maths" />
             </SelectPicker>
           </View>
 

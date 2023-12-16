@@ -25,8 +25,6 @@ class Database {
     }
 
     static add(hours: any, minutes: any, sound: string, challenge: string) {
-        console.log('add new alarm');
-
         db.transaction(tx => {
             tx.executeSql(
                 'INSERT INTO alarm (hours, minutes, days, sound, dailyChallenge, stoppedSuccessfully) VALUES (?, ?, ?, ?, ?, ?)',

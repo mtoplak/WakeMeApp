@@ -14,7 +14,7 @@
 
 ## Development
 
-# Prerequisites
+### Prerequisites
 
 - [Node.js](https://nodejs.org/)
 - [Yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)

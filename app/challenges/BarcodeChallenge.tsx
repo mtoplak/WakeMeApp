@@ -7,10 +7,9 @@ import {
   StyleSheet,
   Button,
   Alert,
-  BackHandler,
 } from "react-native";
 import Database from "../../database";
-import { router, useNavigation } from "expo-router";
+import { router } from "expo-router";
 
 const BarcodeChallenge = () => {
   const [remainingTime, setRemainingTime] = useState(60);

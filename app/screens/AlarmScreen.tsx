@@ -1,27 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableHighlight, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
+import * as Notification from "expo-notifications";
 
 const AlarmScreen = () => {
-  const alarmTime = new Date();
-  alarmTime.setHours(8);
-  alarmTime.setMinutes(30);
+  const [time, setTime] = useState("");
+  const [challenge, setChallenge] = useState("");
 
-  const formatTime = (date: Date) => {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    return `${hours < 10 ? "0" + hours : hours}:${
-      minutes < 10 ? "0" + minutes : minutes
-    }`;
-  };
+  const lastNotificationResponse = Notification.useLastNotificationResponse();
+
+  useEffect(() => {
+    // console.log("Last Notification Response:", lastNotificationResponse);
+    if (lastNotificationResponse) {
+      const { time, challenge } =
+        lastNotificationResponse.notification.request.content.data;
+      setTime(time);
+      setChallenge(challenge);
+    }
+  }, [lastNotificationResponse]);
 
   const handleSnooze = () => {
-    console.log("Snooze button pressed");
     Alert.alert("Snooze", "You will lose your streak", [
       {
         text: "OK",
-        onPress: () => console.log("Cancel pressed"),
+        onPress: () => {
+          router.back();
+        },
         style: "cancel",
       },
     ]);
@@ -29,7 +34,7 @@ const AlarmScreen = () => {
 
   const handleStop = () => {
     console.log("Stop button pressed");
-    router.replace("/challenges/BarcodeChallenge");
+    router.replace(`/challenges/${challenge}Challenge`);
   };
 
   return (
@@ -45,7 +50,7 @@ const AlarmScreen = () => {
     >
       <View style={{ alignItems: "center", marginBottom: 40 }}>
         <Text style={{ fontSize: 80, fontWeight: "bold", color: "white" }}>
-          {formatTime(alarmTime)}
+          {time}
         </Text>
       </View>
       <View style={{ width: "80%" }}>
