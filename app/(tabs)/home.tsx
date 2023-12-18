@@ -116,8 +116,14 @@ const HomePage = () => {
       alarmDate.setDate(now.getDate() + 1);
     }
 
-    const hours = alarmDate.getHours();
-    const minutes = alarmDate.getMinutes();
+    let hours: number | string = alarmDate.getHours();
+    let minutes: number | string = alarmDate.getMinutes();
+
+    hours = hours < 10 ? `0${hours}` : hours.toString();
+    minutes = minutes < 10 ? `0${minutes}` : minutes.toString();
+
+    console.log(hours);
+    console.log(minutes);
 
     Database.add(hours, minutes, selectedSound, selectedChallenge);
     console.log(
@@ -132,6 +138,7 @@ const HomePage = () => {
           url: "screens/AlarmScreen",
           time: hours + ":" + minutes,
           challenge: selectedChallenge,
+          ringtone: selectedSound,
         },
         sound: "barkingCat.wav",
         badge: 1,
@@ -189,11 +196,11 @@ const HomePage = () => {
               }
               itemStyle={{ fontSize: 16 }}
             >
-              <SelectPicker.Item label="Default Sound" value="Default Sound" />
+              <SelectPicker.Item label="Default Sound" value="Default" />
               <SelectPicker.Item label="Barking Cat" value="Barking Cat" />
               <SelectPicker.Item
                 label="Never Gonna Give You Up"
-                value="Never Gonna Give You Up"
+                value="Rick Roll"
               />
               <SelectPicker.Item label="Buzzer" value="Buzzer" />
             </SelectPicker>

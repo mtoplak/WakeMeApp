@@ -3,28 +3,58 @@ import { View, Text, TouchableHighlight, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import * as Notification from "expo-notifications";
+import { Audio } from "expo-av";
+const Buzzer = require("../../assets/audio/Buzzer.mp3");
+const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
+const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
+const Default = require("../../assets/audio/Default.mp3");
 
 const AlarmScreen = () => {
   const [time, setTime] = useState("");
   const [challenge, setChallenge] = useState("");
+  const [sound, setSound] = useState<any>();
 
   const lastNotificationResponse = Notification.useLastNotificationResponse();
 
   useEffect(() => {
     // console.log("Last Notification Response:", lastNotificationResponse);
     if (lastNotificationResponse) {
-      const { time, challenge } =
+      const { time, challenge, ringtone } =
         lastNotificationResponse.notification.request.content.data;
       setTime(time);
       setChallenge(challenge);
+      playSound(ringtone);
     }
   }, [lastNotificationResponse]);
+
+  async function playSound(ring: any) {
+    let ringtoneModule;
+
+    switch (ring) {
+      case "Buzzer":
+        ringtoneModule = Buzzer;
+        break;
+      case "Barking Cat":
+        ringtoneModule = Barking_Cat;
+        break;
+      case "Rick Roll":
+        ringtoneModule = Rick_Roll;
+        break;
+      default:
+        ringtoneModule = Default;
+        break;
+    }
+    const { sound } = await Audio.Sound.createAsync(ringtoneModule);
+    setSound(sound);
+    await sound.playAsync();
+  }
 
   const handleSnooze = () => {
     Alert.alert("Snooze", "You will lose your streak", [
       {
         text: "OK",
-        onPress: () => {
+        onPress: async () => {
+          await sound.unloadAsync();
           router.back();
         },
         style: "cancel",
@@ -32,8 +62,9 @@ const AlarmScreen = () => {
     ]);
   };
 
-  const handleStop = () => {
+  const handleStop = async () => {
     console.log("Stop button pressed");
+    await sound.unloadAsync();
     router.replace(`/challenges/${challenge}Challenge`);
   };
 
