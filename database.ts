@@ -19,7 +19,7 @@ class Database {
         console.log('create db');
         db.transaction(tx => {
             tx.executeSql("DROP TABLE IF EXISTS alarm;");
-            tx.executeSql("CREATE TABLE IF NOT EXISTS alarm (id INTEGER PRIMARY KEY NOT NULL, hours TEXT, minutes TEXT, days TEXT, sound TEXT, dailyChallenge TEXT, stoppedSuccessfully INTEGER);");
+            tx.executeSql("CREATE TABLE IF NOT EXISTS alarm (id INTEGER PRIMARY KEY NOT NULL, hours TEXT, minutes TEXT, days TEXT, sound TEXT, dailyChallenge TEXT, stoppedSuccessfully INTEGER, active INTEGER);");
             tx.executeSql("CREATE TABLE IF NOT EXISTS user (id INTEGER primary key not null, TEXT name, INTEGER streak);");
         });
     }
@@ -27,8 +27,8 @@ class Database {
     static add(hours: any, minutes: any, sound: string, challenge: string) {
         db.transaction(tx => {
             tx.executeSql(
-                'INSERT INTO alarm (hours, minutes, days, sound, dailyChallenge, stoppedSuccessfully) VALUES (?, ?, ?, ?, ?, ?)',
-                [hours, minutes, 'null', sound, challenge, 0]
+                'INSERT INTO alarm (hours, minutes, days, sound, dailyChallenge, stoppedSuccessfully, active) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [hours, minutes, 'null', sound, challenge, 0, 1]
             );
         });
     }
@@ -44,6 +44,12 @@ class Database {
                 reject(error);
             });
         }));
+    }
+
+    static updateActive(id: number, active: number) {
+        db.transaction(tx => {
+            tx.executeSql(`UPDATE alarm SET active=${active} WHERE id=${id}`);
+        });
     }
 
     static updatePassed(id: number) {

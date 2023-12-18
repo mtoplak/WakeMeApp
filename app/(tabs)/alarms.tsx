@@ -1,5 +1,12 @@
 import React, { useState, useCallback } from "react";
-import { View, Text, FlatList, Animated, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Animated,
+  StyleSheet,
+  Switch,
+} from "react-native";
 import Database from "../../database";
 import { useFocusEffect } from "expo-router";
 import { RectButton } from "react-native-gesture-handler";
@@ -13,6 +20,15 @@ const Alarms = () => {
       read_db();
     }, [])
   );
+
+  const onToggleSwitch = (id: number, active: number) => {
+    if (active == 1) {
+      Database.updateActive(id, 0);
+    } else {
+      Database.updateActive(id, 1);
+    }
+    read_db();
+  };
 
   const read_db = async () => {
     try {
@@ -56,8 +72,6 @@ const Alarms = () => {
   };
 
   const renderAlarmItem = ({ item }: { item: any }) => {
-    const padNumber = (num: number) => num.toString().padStart(2, "0");
-
     return (
       <Swipeable
         renderRightActions={(progress, dragX) =>
@@ -67,9 +81,7 @@ const Alarms = () => {
         <View style={styles.listItem}>
           <View style={styles.leftContainer}>
             <Text style={styles.alarmTimeText}>
-              {`${padNumber(parseInt(item.hours))}:${padNumber(
-                parseInt(item.minutes)
-              )}`}
+              {`${item.hours}:${item.minutes}`}
             </Text>
           </View>
 
@@ -78,6 +90,11 @@ const Alarms = () => {
             <Text>{`Challenge: ${item.dailyChallenge}`}</Text>
             <Text>{`Sound: ${item.sound}`}</Text>
           </View>
+          <Switch
+            value={item.active == 1 ? true : false}
+            onValueChange={() => onToggleSwitch(item.id, item.active)}
+            trackColor={{ true: "#4CD964" }}
+          />
         </View>
       </Swipeable>
     );

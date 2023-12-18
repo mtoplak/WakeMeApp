@@ -2,9 +2,8 @@
 
 ## Functionalities
 
-- [x] Schedule and delete alarm
+- [x] Schedule, toggle and delete alarm
 - [x] Notifications on alarm
-- [ ] Sounds
 - [x] Barcode scan challenge
 - [ ] Math challenge
 - [ ] Riddle challenge
