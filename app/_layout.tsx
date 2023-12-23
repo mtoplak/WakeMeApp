@@ -1,8 +1,9 @@
 import { Stack } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { router } from "expo-router";
 import * as Notifications from "expo-notifications";
 import { StatusBar } from "expo-status-bar";
+import SoundContextProvider from "./context/SoundContextProvider";
 
 function useNotificationObserver() {
   useEffect(() => {
@@ -40,7 +41,7 @@ const StackLayout = () => {
   useNotificationObserver();
 
   return (
-    <>
+    <SoundContextProvider>
       <StatusBar style="dark" />
       <Stack>
         <Stack.Screen
@@ -68,7 +69,7 @@ const StackLayout = () => {
           }}
         />
       </Stack>
-    </>
+    </SoundContextProvider>
   );
 };
 

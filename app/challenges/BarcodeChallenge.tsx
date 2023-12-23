@@ -1,5 +1,5 @@
 import { BarCodeScanner } from "expo-barcode-scanner";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,20 +10,36 @@ import {
 } from "react-native";
 import Database from "../../database";
 import { router } from "expo-router";
+import MyContext from "../context/SoundContext";
+import { Audio } from "expo-av";
+const Buzzer = require("../../assets/audio/Buzzer.mp3");
+const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
+const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
+const Default = require("../../assets/audio/Default.mp3");
 
 const BarcodeChallenge = () => {
   const [remainingTime, setRemainingTime] = useState(60);
   const [hasPermission, setHasPermission] = useState<null | boolean>(null);
   const [scanned, setScanned] = useState(false);
   const [isClicked, setIsClicked] = useState(true);
+  const [sound, setSound] = useState<any>();
+  const { playingSound } = useContext(MyContext);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     };
+    playSound(playingSound);
 
     getBarCodeScannerPermissions();
+
+    return () => {
+      if (sound) {
+        sound.stopAsync();
+        sound.unloadAsync();
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -36,6 +52,30 @@ const BarcodeChallenge = () => {
     return () => clearInterval(timer);
   }, [remainingTime]);
 
+  async function playSound(ring: any) {
+    let ringtoneModule;
+
+    switch (ring) {
+      case "Buzzer":
+        ringtoneModule = Buzzer;
+        break;
+      case "Barking Cat":
+        ringtoneModule = Barking_Cat;
+        break;
+      case "Rick Roll":
+        ringtoneModule = Rick_Roll;
+        break;
+      default:
+        ringtoneModule = Default;
+        break;
+    }
+    const { sound } = await Audio.Sound.createAsync(ringtoneModule, {
+      shouldPlay: true,
+      isLooping: true,
+    });
+    setSound(sound);
+  }
+
   const formatTime = (timeInSeconds: number) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = timeInSeconds % 60;
@@ -45,13 +85,20 @@ const BarcodeChallenge = () => {
     )}`;
   };
 
-  const handleBarCodeScanned = ({ type, data }: { type: any; data: any }) => {
+  const handleBarCodeScanned = async ({
+    type,
+    data,
+  }: {
+    type: any;
+    data: any;
+  }) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     console.log(type);
     console.log(data);
     Alert.alert("Barcode Scanned", "You have passed the challenge!");
     Database.updatePassed(1);
+    await sound.unloadAsync();
     router.back();
   };
 
@@ -89,7 +136,7 @@ const BarcodeChallenge = () => {
         <Text style={styles.button}>Scan Barcode</Text>
       </TouchableOpacity>
       {scanned && (
-        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
+        <Button title="Tap to Scan Again" onPress={() => setScanned(false)} />
       )}
     </View>
   );

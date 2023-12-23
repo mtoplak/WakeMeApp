@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, TouchableHighlight, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import * as Notification from "expo-notifications";
 import { Audio } from "expo-av";
+import MyContext from "../context/SoundContext";
 const Buzzer = require("../../assets/audio/Buzzer.mp3");
 const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
 const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
@@ -13,7 +14,7 @@ const AlarmScreen = () => {
   const [time, setTime] = useState("");
   const [challenge, setChallenge] = useState("");
   const [sound, setSound] = useState<any>();
-
+  const { setPlayingSound } = useContext(MyContext);
   const lastNotificationResponse = Notification.useLastNotificationResponse();
 
   useEffect(() => {
@@ -25,6 +26,13 @@ const AlarmScreen = () => {
       setChallenge(challenge);
       playSound(ringtone);
     }
+
+    return () => {
+      if (sound) {
+        sound.stopAsync();
+        sound.unloadAsync();
+      }
+    };
   }, [lastNotificationResponse]);
 
   async function playSound(ring: any) {
@@ -44,9 +52,12 @@ const AlarmScreen = () => {
         ringtoneModule = Default;
         break;
     }
-    const { sound } = await Audio.Sound.createAsync(ringtoneModule);
+    const { sound } = await Audio.Sound.createAsync(ringtoneModule, {
+      shouldPlay: true,
+      isLooping: true,
+    });
     setSound(sound);
-    await sound.playAsync();
+    setPlayingSound(sound);
   }
 
   const handleSnooze = () => {

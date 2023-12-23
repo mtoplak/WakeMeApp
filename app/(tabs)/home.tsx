@@ -101,10 +101,6 @@ const HomePage = () => {
   };
 
   const handleSaveAlarm = () => {
-    console.log(selectedSound);
-    console.log(selectedChallenge);
-    console.log(selectedTime);
-
     // Parse selectedTime to extract hours and minutes
     const parsedTime = new Date(selectedTime);
     const now = new Date();
@@ -121,9 +117,6 @@ const HomePage = () => {
 
     hours = hours < 10 ? `0${hours}` : hours.toString();
     minutes = minutes < 10 ? `0${minutes}` : minutes.toString();
-
-    console.log(hours);
-    console.log(minutes);
 
     Database.add(hours, minutes, selectedSound, selectedChallenge);
     console.log(
@@ -149,7 +142,7 @@ const HomePage = () => {
     });
   };
 
-  const scrollViewRef = useRef();
+  const scrollViewRef = useRef<ScrollView | null>(null);
 
   const handleScroll = (event: any) => {
     const offsetY = event.nativeEvent.contentOffset.y;
@@ -161,7 +154,7 @@ const HomePage = () => {
     }
 
     // Prevent scrolling upward
-    scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: false });
+    scrollViewRef.current!.scrollTo({ x: 0, y: 0, animated: false });
   };
 
   return (
