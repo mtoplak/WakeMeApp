@@ -8,6 +8,7 @@ import {
   Alert,
   StyleSheet,
 } from "react-native";
+import { updateStreakCount } from "../streakLogic";
 
 const RiddleChallenge = () => {
   const [answer, setAnswer] = useState("");
@@ -33,9 +34,15 @@ const RiddleChallenge = () => {
       );
       const data = await response.json();
       setWordData(data);
-      const shuffledWord = shuffleWord(data.word);
-      setScrambledWord(shuffledWord);
+      let shuffledWord = shuffleWord(data.word);
+      const lowercaseAnswer = data.word.toLowerCase();
 
+      while (shuffledWord.toLowerCase() === lowercaseAnswer) {
+        shuffledWord = shuffleWord(data.word);
+      }
+
+      setWordData(data);
+      setScrambledWord(shuffledWord);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching random word:", error);
@@ -52,8 +59,9 @@ const RiddleChallenge = () => {
 
   const checkAnswer = () => {
     if (answer.toLowerCase() === wordData.word.toLowerCase()) {
+      updateStreakCount();
       Alert.alert("Congratulations!", "You solved the riddle!");
-      router.replace(`/screens/QuoteScreen`);
+      router.back();
     } else {
       setTriesLeft(triesLeft - 1);
       Alert.alert("Incorrect", `Try again! Tries left: ${triesLeft - 1}`);
