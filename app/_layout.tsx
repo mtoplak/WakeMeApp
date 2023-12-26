@@ -68,6 +68,15 @@ const StackLayout = () => {
             gestureEnabled: false,
           }}
         />
+        <Stack.Screen
+          name="screens/QuoteScreen"
+          options={{
+            headerShown: false,
+            headerLeft: () => undefined,
+            headerBackVisible: false,
+            gestureEnabled: false,
+          }}
+        />
       </Stack>
     </SoundContextProvider>
   );

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { router } from "expo-router";
 import {
   View,
   Text,
@@ -11,33 +12,86 @@ import {
 const RiddleChallenge = () => {
   const [answer, setAnswer] = useState("");
   const [triesLeft, setTriesLeft] = useState(3);
+  const [wordData, setWordData] = useState({
+    word: "",
+    hint: "",
+    category: "",
+    numLetters: 0,
+    numSyllables: 0,
+  });
+  const [scrambledWord, setScrambledWord] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchRandomWord();
+  }, []);
+
+  const fetchRandomWord = async () => {
+    try {
+      const response = await fetch(
+        "https://www.wordgamedb.com/api/v1/words/random"
+      );
+      const data = await response.json();
+      setWordData(data);
+      const shuffledWord = shuffleWord(data.word);
+      setScrambledWord(shuffledWord);
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching random word:", error);
+      setLoading(false);
+    }
+  };
+
+  const shuffleWord = (word: string) => {
+    return word
+      .split("")
+      .sort(() => Math.random() - 0.5)
+      .join("");
+  };
 
   const checkAnswer = () => {
-    const correctAnswer = "Keyboard";
-
-    if (answer.toLowerCase() === correctAnswer.toLowerCase()) {
+    if (answer.toLowerCase() === wordData.word.toLowerCase()) {
       Alert.alert("Congratulations!", "You solved the riddle!");
+      router.replace(`/screens/QuoteScreen`);
     } else {
       setTriesLeft(triesLeft - 1);
       Alert.alert("Incorrect", `Try again! Tries left: ${triesLeft - 1}`);
       setAnswer("");
+      if (triesLeft === 1) {
+        Alert.alert("Answer", `${wordData.word}`);
+      }
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.riddleText}>What has keys but can't open locks?</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Your Answer"
-        placeholderTextColor="#757575"
-        onChangeText={(text) => setAnswer(text)}
-        value={answer}
-      />
-      <Text style={styles.triesText}>{`Try (${triesLeft}/3)`}</Text>
-      <TouchableOpacity style={styles.checkA} onPress={checkAnswer}>
-        <Text style={styles.checkAText}>Check Answer</Text>
-      </TouchableOpacity>
+      {loading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <>
+          <Text style={styles.hintText}>{`${
+            triesLeft === 1 ? "Hint: " + wordData.hint : "You can do it!"
+          }`}</Text>
+          <Text
+            style={styles.categoryText}
+          >{`Category: ${wordData.category}`}</Text>
+          <Text
+            style={styles.riddleText}
+          >{`Scrambled Letters: ${scrambledWord}`}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Your Answer"
+            placeholderTextColor="#757575"
+            onChangeText={(text) => setAnswer(text)}
+            value={answer}
+          />
+          <Text style={styles.triesText}>{`Try (${triesLeft}/3)`}</Text>
+          <TouchableOpacity style={styles.checkA} onPress={checkAnswer}>
+            <Text style={styles.checkAText}>Check Answer</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 };
@@ -48,6 +102,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+  },
+  hintText: {
+    fontSize: 16,
+    color: "#757575",
+    marginBottom: 10,
+  },
+  categoryText: {
+    fontSize: 16,
+    color: "#757575",
+    marginBottom: 10,
   },
   riddleText: {
     fontSize: 24,
