@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { updateStreakCount } from "../streakLogic";
+import Database from "../../database";
 
 const RiddleChallenge = () => {
   const [answer, setAnswer] = useState("");
@@ -59,15 +60,21 @@ const RiddleChallenge = () => {
 
   const checkAnswer = () => {
     if (answer.toLowerCase() === wordData.word.toLowerCase()) {
-      updateStreakCount();
+      Database.updateStreak();
       Alert.alert("Congratulations!", "You solved the riddle!");
       router.back();
+      // router.replace(`/screens/QuoteScreen`);
     } else {
       setTriesLeft(triesLeft - 1);
       Alert.alert("Incorrect", `Try again! Tries left: ${triesLeft - 1}`);
       setAnswer("");
       if (triesLeft === 1) {
-        Alert.alert("Answer", `${wordData.word}`);
+        Alert.alert(
+          `The answer was ${wordData.word}`,
+          "You failed! Try again tommorow"
+        );
+        Database.resetStreak();
+        router.back();
       }
     }
   };
@@ -94,7 +101,9 @@ const RiddleChallenge = () => {
             onChangeText={(text) => setAnswer(text)}
             value={answer}
           />
-          <Text style={styles.triesText}>{`Try (${triesLeft}/3)`}</Text>
+          <Text style={styles.triesText}>{`You are on Try (${
+            3 - triesLeft + 1
+          }/3)`}</Text>
           <TouchableOpacity style={styles.checkA} onPress={checkAnswer}>
             <Text style={styles.checkAText}>Check Answer</Text>
           </TouchableOpacity>

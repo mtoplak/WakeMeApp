@@ -1,18 +1,24 @@
 import React, { useCallback, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import { getStreakCount } from "../streakLogic";
+import Database from "../../database";
 
 const StreakScreen = () => {
-  const [streak, setStreak] = useState(0);
-
-  const getCurrentStreakMessage = () => {
-    return `Your current streak is: ${streak}! Keep it going! 🚀`;
-  };
+  const [streak, setStreak] = useState<number>(0);
+  const [highest, setHighest] = useState<number>(0);
 
   const fetchStreakCount = async () => {
-    const storedStreak = await getStreakCount();
-    setStreak(storedStreak);
+    try {
+      const storedStreakData = await Database.getStreak();
+      const data = JSON.parse(storedStreakData as string).rows._array;
+      console.log(data);
+      const current = data[0]?.currentStreak;
+      const highest = data[0]?.highestStreak;
+      setStreak(current);
+      setHighest(highest);
+    } catch (error) {
+      console.error("Error fetching streak counts:", error);
+    }
   };
 
   useFocusEffect(
@@ -24,7 +30,9 @@ const StreakScreen = () => {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text style={styles.heading}>Streak Counter</Text>
-      <Text style={styles.streakMessage}>{getCurrentStreakMessage()}</Text>
+      <Text style={styles.streakMessage}>{`Your current streak is: ${streak}! Keep it going! 🚀`}</Text>
+      <Text style={styles.streakMessage}>{`Your highest streak is: ${highest}! Dont give up now! 🚀`}</Text>
+
     </View>
   );
 };

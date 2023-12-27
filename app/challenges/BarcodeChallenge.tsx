@@ -98,8 +98,10 @@ const BarcodeChallenge = () => {
     console.log(data);
     Alert.alert("Barcode Scanned", "You have passed the challenge!");
     Database.updatePassed(1);
+    Database.updateStreak();
     await sound.unloadAsync();
     router.back();
+    // router.replace(`/screens/QuoteScreen`);
   };
 
   if (hasPermission === null) {
@@ -110,6 +112,7 @@ const BarcodeChallenge = () => {
   }
   if (remainingTime === 0) {
     Alert.alert("Time has expired", "Please try again tomorrow.");
+    Database.resetStreak();
     router.back();
   }
 
