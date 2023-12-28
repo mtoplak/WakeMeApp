@@ -93,9 +93,9 @@ const BarcodeChallenge = () => {
     data: any;
   }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    console.log(type);
-    console.log(data);
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    // console.log(type);
+    // console.log(data);
     Alert.alert("Barcode Scanned", "You have passed the challenge!");
     Database.updatePassed(1);
     Database.updateStreak();

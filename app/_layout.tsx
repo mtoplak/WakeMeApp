@@ -4,6 +4,7 @@ import { router } from "expo-router";
 import * as Notifications from "expo-notifications";
 import { StatusBar } from "expo-status-bar";
 import SoundContextProvider from "./context/SoundContextProvider";
+import Database from "../database";
 
 function useNotificationObserver() {
   useEffect(() => {
@@ -37,8 +38,41 @@ function useNotificationObserver() {
   }, []);
 }
 
+function useAlarmChecker() {
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      checkAlarms();
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  async function checkAlarms() {
+    try {
+      let alarms: any = await Database.getAll();
+      alarms = JSON.parse(alarms).rows._array;
+      const currentDateTime = new Date();
+      const currentHours = currentDateTime.getHours();
+      const currentMinutes = currentDateTime.getMinutes();
+
+      alarms.forEach((alarm: any) => {
+        const { hours, minutes } = alarm;
+        if (
+          parseInt(hours) === currentHours &&
+          parseInt(minutes) === currentMinutes
+        ) {
+          router.push("screens/AlarmScreen");
+        }
+      });
+    } catch (error) {
+      console.error("Error checking alarms:", error);
+    }
+  }
+}
+
 const StackLayout = () => {
   useNotificationObserver();
+  useAlarmChecker();
 
   return (
     <SoundContextProvider>

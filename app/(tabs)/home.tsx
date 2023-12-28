@@ -93,7 +93,7 @@ const HomePage = () => {
     };
   }, []);
 
-  const handleTimeChange = (event: any, date: Date) => {
+  const handleTimeChange = (event: any, date: Date | undefined) => {
     if (date !== undefined) {
       setShowTimePicker(Platform.OS === "ios"); // Hide picker immediately on iOS
       setSelectedTime(date);

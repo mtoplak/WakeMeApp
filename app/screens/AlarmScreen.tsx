@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { View, Text, TouchableHighlight, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import * as Notification from "expo-notifications";
 import { Audio } from "expo-av";
-import MyContext from "../context/SoundContext";
+import SoundContext from "../context/SoundContext";
+import Database from "../../database";
 const Buzzer = require("../../assets/audio/Buzzer.mp3");
 const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
 const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
@@ -14,18 +14,16 @@ const AlarmScreen = () => {
   const [time, setTime] = useState("");
   const [challenge, setChallenge] = useState("");
   const [sound, setSound] = useState<any>();
-  const { setPlayingSound } = useContext(MyContext);
-  const lastNotificationResponse = Notification.useLastNotificationResponse();
+  const { setPlayingSound } = useContext(SoundContext);
 
   useEffect(() => {
-    // console.log("Last Notification Response:", lastNotificationResponse);
-    if (lastNotificationResponse) {
-      const { time, challenge, ringtone } =
-        lastNotificationResponse.notification.request.content.data;
-      setTime(time);
-      setChallenge(challenge);
-      playSound(ringtone);
-    }
+    Database.getLatestAlarm((alarm: any) => {
+      if (alarm) {
+        setTime(`${alarm.hours}:${alarm.minutes}`);
+        setChallenge(alarm.dailyChallenge);
+        playSound(alarm.sound);
+      }
+    });
 
     return () => {
       if (sound) {
@@ -33,7 +31,7 @@ const AlarmScreen = () => {
         sound.unloadAsync();
       }
     };
-  }, [lastNotificationResponse]);
+  }, []);
 
   async function playSound(ring: any) {
     let ringtoneModule;
@@ -65,6 +63,7 @@ const AlarmScreen = () => {
       {
         text: "OK",
         onPress: async () => {
+          await sound.stopAsync();
           await sound.unloadAsync();
           router.back();
         },
@@ -75,6 +74,7 @@ const AlarmScreen = () => {
 
   const handleStop = async () => {
     console.log("Stop button pressed");
+    // Database.updatePassed(1);
     await sound.unloadAsync();
     router.replace(`/challenges/${challenge}Challenge`);
   };
