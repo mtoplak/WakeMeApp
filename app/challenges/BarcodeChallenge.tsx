@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Database from "../../database";
 import { router } from "expo-router";
-import MyContext from "../context/SoundContext";
+import SoundContext from "../context/SoundContext";
 import { Audio } from "expo-av";
 const Buzzer = require("../../assets/audio/Buzzer.mp3");
 const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
@@ -23,7 +23,7 @@ const BarcodeChallenge = () => {
   const [scanned, setScanned] = useState(false);
   const [isClicked, setIsClicked] = useState(true);
   const [sound, setSound] = useState<any>();
-  const { playingSound } = useContext(MyContext);
+  const { playingSound } = useContext(SoundContext);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -72,6 +72,7 @@ const BarcodeChallenge = () => {
     const { sound } = await Audio.Sound.createAsync(ringtoneModule, {
       shouldPlay: true,
       isLooping: true,
+      volume: 1,
     });
     setSound(sound);
   }
@@ -93,7 +94,7 @@ const BarcodeChallenge = () => {
     data: any;
   }) => {
     setScanned(true);
-    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    // alert(`Barcode with type ${type} and data ${data} has been scanned!`);
     // console.log(type);
     // console.log(data);
     Alert.alert("Barcode Scanned", "You have passed the challenge!");

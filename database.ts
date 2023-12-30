@@ -19,24 +19,36 @@ class Database {
     console.log('create db');
     db.transaction(tx => {
       tx.executeSql("DROP TABLE IF EXISTS alarm;");
-      tx.executeSql("CREATE TABLE IF NOT EXISTS alarm (id INTEGER PRIMARY KEY NOT NULL, hours TEXT, minutes TEXT, days TEXT, sound TEXT, dailyChallenge TEXT, stoppedSuccessfully INTEGER, active INTEGER);");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS alarm (id INTEGER PRIMARY KEY NOT NULL, hours TEXT, minutes TEXT, days TEXT, sound TEXT, dailyChallenge TEXT, stoppedSuccessfully INTEGER, active INTEGER, notificationId TEXT);");
       tx.executeSql("CREATE TABLE IF NOT EXISTS streak (id INTEGER PRIMARY KEY NOT NULL, currentStreak INTEGER, highestStreak INTEGER);");
       tx.executeSql("CREATE TABLE IF NOT EXISTS user (id INTEGER primary key not null, TEXT name, INTEGER streak);");
       this.addStreak();
     });
   }
 
-  static add(hours: any, minutes: any, sound: string, challenge: string) {
+  static add(hours: any, minutes: any, sound: string, challenge: string, notificationId: string) {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO alarm (hours, minutes, days, sound, dailyChallenge, stoppedSuccessfully, active) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [hours, minutes, 'null', sound, challenge, 0, 1]
+        'INSERT INTO alarm (hours, minutes, days, sound, dailyChallenge, stoppedSuccessfully, active, notificationId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [hours, minutes, 'null', sound, challenge, 0, 1, notificationId]
       );
     });
   }
 
   static getAll() {
     var query = "SELECT * FROM alarm";
+    return new Promise((resolve, reject) => db.transaction((tx) => {
+      tx.executeSql(query, [], (tx, results) => {
+        resolve(JSON.stringify(results));
+        console.log(results);
+      }, function (tx, error): any {
+        reject(error);
+      });
+    }));
+  }
+
+  static getAllActive() {
+    var query = "SELECT * FROM alarm WHERE active = 1";
     return new Promise((resolve, reject) => db.transaction((tx) => {
       tx.executeSql(query, [], (tx, results) => {
         resolve(JSON.stringify(results));
@@ -103,6 +115,28 @@ class Database {
     });
   }
 
+  static updateNotificationId(id: number, notificationId: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      db.transaction(tx => {
+        tx.executeSql(`SELECT notificationId FROM alarm WHERE id=${id}`, [], (_, queryResult) => {
+          if (queryResult.rows.length > 0) {
+            const currentNotificationId = queryResult.rows.item(0).notificationId;
+
+            tx.executeSql(`UPDATE alarm SET notificationId='${notificationId}' WHERE id=${id}`, [], (_, result) => {
+              if (result.rowsAffected > 0) {
+                resolve(currentNotificationId);
+              } else {
+                reject(new Error('Update failed.'));
+              }
+            });
+          } else {
+            reject(new Error('NotificationId not found.'));
+          }
+        });
+      });
+    });
+  }
+
   static updatePassed(id: number) {
     console.log('update passed');
     db.transaction(tx => {
@@ -111,7 +145,6 @@ class Database {
   }
 
   static getOne(id: any) {
-    console.log('one row request');
     var query = `SELECT * FROM alarm WHERE id='${id}'`;
     return new Promise((resolve, reject) => db.transaction((tx) => {
       tx.executeSql(query, [], (tx, results) => {
@@ -122,10 +155,25 @@ class Database {
     }));
   }
 
-  static delete(id: any) {
-    console.log('delete from db');
-    db.transaction(tx => {
-      tx.executeSql(`DELETE FROM alarm WHERE (id=${id})`);
+  static delete(id: any): Promise<string> {
+    return new Promise((resolve, reject) => {
+      db.transaction(tx => {
+        tx.executeSql(`SELECT notificationId FROM alarm WHERE id=${id}`, [], (_, queryResult) => {
+          if (queryResult.rows.length > 0) {
+            const currentNotificationId = queryResult.rows.item(0).notificationId;
+
+            tx.executeSql(`DELETE FROM alarm WHERE id=${id}`, [], (_, result) => {
+              if (result.rowsAffected > 0) {
+                resolve(currentNotificationId);
+              } else {
+                reject(new Error('Delete failed.'));
+              }
+            });
+          } else {
+            reject(new Error('NotificationId not found.'));
+          }
+        });
+      });
     });
   }
 

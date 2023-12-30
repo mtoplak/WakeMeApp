@@ -11,6 +11,7 @@ import Database from "../../database";
 import { useFocusEffect } from "expo-router";
 import { RectButton } from "react-native-gesture-handler";
 import { Swipeable } from "react-native-gesture-handler";
+import * as Notification from "expo-notifications";
 
 const Alarms = () => {
   const [alarms, setAlarms] = useState([]);
@@ -21,11 +22,58 @@ const Alarms = () => {
     }, [])
   );
 
-  const onToggleSwitch = (id: number, active: number) => {
+  const onToggleSwitch = async (id: number, active: number) => {
     if (active == 1) {
       Database.updateActive(id, 0);
+      const identifier: string = await Database.updateNotificationId(id, "");
+      await Notification.cancelScheduledNotificationAsync(identifier);
     } else {
       Database.updateActive(id, 1);
+      const alarmToUpdate: any = await Database.getOne(id);
+
+      // Schedule notification again
+      const alarm = JSON.parse(alarmToUpdate).rows._array[0];
+      const selectedTime = new Date();
+      selectedTime.setHours(alarm.hours);
+      selectedTime.setMinutes(alarm.minutes);
+      const parsedTime = new Date(selectedTime);
+      const now = new Date();
+      let alarmDate = new Date(selectedTime);
+
+      // Check if the specified time has already passed for today
+      if (parsedTime < now) {
+        // If yes, schedule for tomorrow
+        alarmDate.setDate(now.getDate() + 1);
+      }
+
+      let hours: number | string = alarmDate.getHours();
+      let minutes: number | string = alarmDate.getMinutes();
+
+      hours = hours < 10 ? `0${hours}` : hours.toString();
+      minutes = minutes < 10 ? `0${minutes}` : minutes.toString();
+      console.log(
+        `${alarmDate.toISOString().slice(0, 10)}T${hours}:${minutes}:00`
+      );
+      const identifier = await Notification.scheduleNotificationAsync({
+        content: {
+          title: "ALARM",
+          body: "Tap here to deactivate alarm and solve challenge",
+          data: {
+            userName: "MAC",
+            url: "screens/AlarmScreen",
+            time: hours + ":" + minutes,
+            challenge: alarm.dailyChallenge,
+            ringtone: alarm.sound,
+          },
+          badge: 1,
+        },
+        trigger: {
+          date: alarmDate,
+        },
+      });
+
+      // update notification id
+      Database.updateNotificationId(id, identifier);
     }
     read_db();
   };
@@ -47,8 +95,9 @@ const Alarms = () => {
       extrapolate: "clamp",
     });
 
-    const handleDelete = (id: any) => {
-      Database.delete(id);
+    const handleDelete = async (id: any) => {
+      const identifier = await Database.delete(id);
+      await Notification.cancelScheduledNotificationAsync(identifier);
       read_db();
     };
 

@@ -23,8 +23,12 @@
           "icon": "./assets/images/alarm.png",
           "color": "#ffffff",
           "sounds": [
-            "./assets/audio/barkingCat.mp3",
-            "./assets/audio/buzzer.mp3"
+            "./assets/audio/BarkingCat.mp3",
+            "./assets/audio/Buzzer.mp3",
+            "./assets/audio/RickRoll.mp3",
+            "./assets/audio/Default.mp3",
+            "Default.mp3",
+            "./Default.mp3"
           ]
         }
       ],

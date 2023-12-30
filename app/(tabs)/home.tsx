@@ -100,7 +100,7 @@ const HomePage = () => {
     }
   };
 
-  const handleSaveAlarm = () => {
+  const handleSaveAlarm = async () => {
     // Parse selectedTime to extract hours and minutes
     const parsedTime = new Date(selectedTime);
     const now = new Date();
@@ -118,11 +118,10 @@ const HomePage = () => {
     hours = hours < 10 ? `0${hours}` : hours.toString();
     minutes = minutes < 10 ? `0${minutes}` : minutes.toString();
 
-    Database.add(hours, minutes, selectedSound, selectedChallenge);
     console.log(
       `${alarmDate.toISOString().slice(0, 10)}T${hours}:${minutes}:00`
     );
-    Notification.scheduleNotificationAsync({
+    const identifier = await Notification.scheduleNotificationAsync({
       content: {
         title: "ALARM",
         body: "Tap here to deactivate alarm and solve challenge",
@@ -133,13 +132,13 @@ const HomePage = () => {
           challenge: selectedChallenge,
           ringtone: selectedSound,
         },
-        sound: "barkingCat.wav",
         badge: 1,
       },
       trigger: {
         date: alarmDate,
       },
     });
+    Database.add(hours, minutes, selectedSound, selectedChallenge, identifier);
   };
 
   const scrollViewRef = useRef<ScrollView | null>(null);

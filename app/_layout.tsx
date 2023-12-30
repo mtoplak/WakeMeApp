@@ -49,7 +49,7 @@ function useAlarmChecker() {
 
   async function checkAlarms() {
     try {
-      let alarms: any = await Database.getAll();
+      let alarms: any = await Database.getAllActive();
       alarms = JSON.parse(alarms).rows._array;
       const currentDateTime = new Date();
       const currentHours = currentDateTime.getHours();

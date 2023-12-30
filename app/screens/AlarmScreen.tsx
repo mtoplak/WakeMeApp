@@ -5,22 +5,21 @@ import { router } from "expo-router";
 import { Audio } from "expo-av";
 import SoundContext from "../context/SoundContext";
 import Database from "../../database";
+import * as Notifications from "expo-notifications";
 const Buzzer = require("../../assets/audio/Buzzer.mp3");
 const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
 const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
 const Default = require("../../assets/audio/Default.mp3");
 
 const AlarmScreen = () => {
-  const [time, setTime] = useState("");
-  const [challenge, setChallenge] = useState("");
   const [sound, setSound] = useState<any>();
+  const [alarm, setAlarm] = useState<any>();
   const { setPlayingSound } = useContext(SoundContext);
 
   useEffect(() => {
     Database.getLatestAlarm((alarm: any) => {
       if (alarm) {
-        setTime(`${alarm.hours}:${alarm.minutes}`);
-        setChallenge(alarm.dailyChallenge);
+        setAlarm(alarm);
         playSound(alarm.sound);
       }
     });
@@ -53,6 +52,7 @@ const AlarmScreen = () => {
     const { sound } = await Audio.Sound.createAsync(ringtoneModule, {
       shouldPlay: true,
       isLooping: true,
+      volume: 1,
     });
     setSound(sound);
     setPlayingSound(sound);
@@ -65,6 +65,8 @@ const AlarmScreen = () => {
         onPress: async () => {
           await sound.stopAsync();
           await sound.unloadAsync();
+          await Notifications.dismissAllNotificationsAsync();
+          await scheduleNewNotification();
           router.back();
         },
         style: "cancel",
@@ -76,7 +78,34 @@ const AlarmScreen = () => {
     console.log("Stop button pressed");
     // Database.updatePassed(1);
     await sound.unloadAsync();
-    router.replace(`/challenges/${challenge}Challenge`);
+    await Notifications.dismissAllNotificationsAsync();
+    await scheduleNewNotification();
+    router.replace(`/challenges/${alarm.dailyChallenge}Challenge`);
+  };
+
+  const scheduleNewNotification = async () => {
+    const selectedTime = new Date();
+    const tomorrow = new Date(selectedTime.getTime() + 24 * 60 * 60 * 1000);
+    const alarmDate = new Date(tomorrow);
+
+    const identifier = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "ALARM",
+        body: "Tap here to deactivate alarm and solve challenge",
+        data: {
+          userName: "MAC",
+          url: "screens/AlarmScreen",
+          time: alarm.hours + ":" + alarm.minutes,
+          challenge: alarm.dailyChallenge,
+          ringtone: alarm.sound,
+        },
+        badge: 1,
+      },
+      trigger: {
+        date: alarmDate,
+      },
+    });
+    Database.updateNotificationId(alarm.id, identifier);
   };
 
   return (
@@ -92,7 +121,7 @@ const AlarmScreen = () => {
     >
       <View style={{ alignItems: "center", marginBottom: 40 }}>
         <Text style={{ fontSize: 80, fontWeight: "bold", color: "white" }}>
-          {time}
+          {alarm && `${alarm.hours}:${alarm.minutes}`}
         </Text>
       </View>
       <View style={{ width: "80%" }}>
