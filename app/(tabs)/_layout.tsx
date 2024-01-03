@@ -26,7 +26,7 @@ export default () => {
         name="streak"
         options={{
           tabBarLabel: "My Streak",
-          headerTitle: "My Streak",
+          headerTitle: "My Streak Journey",
           tabBarActiveTintColor: "black",
           tabBarIcon: ({}) => (
             <FontAwesome5 name="fire" size={24} color="black" />

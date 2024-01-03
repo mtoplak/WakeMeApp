@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import Database from "../../database";
 
@@ -11,7 +11,6 @@ const StreakScreen = () => {
     try {
       const storedStreakData = await Database.getStreak();
       const data = JSON.parse(storedStreakData as string).rows._array;
-      console.log(data);
       const current = data[0]?.currentStreak;
       const highest = data[0]?.highestStreak;
       setStreak(current);
@@ -28,27 +27,92 @@ const StreakScreen = () => {
   );
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text style={styles.heading}>Streak Counter</Text>
-      <Text style={styles.streakMessage}>{`Your current streak is: ${streak}! Keep it going! 🚀`}</Text>
-      <Text style={styles.streakMessage}>{`Your highest streak is: ${highest}! Dont give up now! 🚀`}</Text>
-
+    <View style={styles.container}>
+      <View style={styles.streakContainer}>
+        <Text
+          style={styles.highestStreakMessage}
+        >{`Your all-time high is ${highest} days! 🌟 Keep it up!`}</Text>
+        <Text
+          style={styles.streakNumber}
+        >{`${streak}`}</Text>
+                <Text
+          style={styles.bigStreakMessage}
+        >{`day streak`}</Text>
+      </View>
+      <ImageBackground
+        source={require("../../assets/pictures/fire.gif")}
+        style={styles.image}
+        resizeMode="contain"
+      ></ImageBackground>
+      <Text style={styles.additionalText}>
+        Keep your Perfect Streak Flame by waking up on time every day.
+      </Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#2d2d2d",
+  },
   heading: {
-    fontSize: 30,
+    fontSize: 32,
     fontWeight: "bold",
     marginBottom: 20,
-    marginTop: 70,
+    color: "#FF8C00",
   },
-  streakMessage: {
-    fontSize: 24,
+  streakContainer: {
+    padding: 20,
+    borderRadius: 15,
+    elevation: 5,
+    marginBottom: 10,
+  },
+  streakNumber: {
+    fontSize: 70,
     textAlign: "center",
-    marginBottom: 100,
+    marginBottom: 0,
+    marginTop: 10,
     fontWeight: "bold",
+    color: "#FF5D2E",
+  },
+  bigStreakMessage: {
+    fontSize: 40,
+    textAlign: "center",
+    marginTop: 0,
+    marginBottom: 15,
+    fontWeight: "bold",
+    color: "#FF5D2E",
+  },
+  highestStreakMessage: {
+    fontSize: 20,
+    textAlign: "center",
+    marginTop: 15,
+    marginBottom: 10,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    borderStyle: "solid",
+    borderColor: "#FF5D2E",
+    borderWidth: 2,
+    borderRadius: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  additionalText: {
+    fontSize: 18,
+    marginBottom: 20,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    textAlign: "center",
     paddingHorizontal: 20,
   },
 });
