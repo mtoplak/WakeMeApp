@@ -111,9 +111,7 @@ const StackLayout = () => {
             gestureEnabled: false,
           }}
         />
-        
       </Stack>
-      
     </SoundContextProvider>
   );
 };

@@ -108,7 +108,6 @@ const BarcodeChallenge = () => {
         },
       },
     ])
-    // router.replace(`/screens/QuoteScreen`);
   };
 
   if (hasPermission === null) {
