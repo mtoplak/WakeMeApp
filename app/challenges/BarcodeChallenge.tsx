@@ -97,11 +97,17 @@ const BarcodeChallenge = () => {
     // alert(`Barcode with type ${type} and data ${data} has been scanned!`);
     // console.log(type);
     // console.log(data);
-    Alert.alert("Barcode Scanned", "You have passed the challenge!");
     Database.updatePassed(1);
     Database.updateStreak();
     await sound.unloadAsync();
-    router.back();
+    Alert.alert("Barcode Scanned", "You have passed the challenge!", [
+      {
+        text: "Continue",
+        onPress: () => {
+          router.push("screens/QuoteScreen");
+        },
+      },
+    ])
     // router.replace(`/screens/QuoteScreen`);
   };
 

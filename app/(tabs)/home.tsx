@@ -207,7 +207,7 @@ const HomePage = () => {
             >
               <SelectPicker.Item label="Riddle Challenge" value="Riddle" />
               <SelectPicker.Item label="Barcode Scan" value="Barcode" />
-              <SelectPicker.Item label="Maths Challenge" value="Maths" />
+              <SelectPicker.Item label="Math Challenge" value="Math" />
             </SelectPicker>
           </View>
 

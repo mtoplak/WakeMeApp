@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { updateStreakCount } from "../streakLogic";
 import Database from "../../database";
+import QuoteScreen from "../screens/QuoteScreen";
 
 const RiddleChallenge = () => {
   const [answer, setAnswer] = useState("");
@@ -61,9 +62,14 @@ const RiddleChallenge = () => {
   const checkAnswer = () => {
     if (answer.toLowerCase() === wordData.word.toLowerCase()) {
       Database.updateStreak();
-      Alert.alert("Congratulations!", "You solved the riddle!");
-      router.back();
-      // router.replace(`/screens/QuoteScreen`);
+      Alert.alert("Congratulations!", "You solved the riddle!", [
+        {
+          text: "Continue",
+          onPress: () => {
+            router.push("screens/QuoteScreen");
+          },
+        },
+      ]);
     } else {
       setTriesLeft(triesLeft - 1);
       Alert.alert("Incorrect", `Try again! Tries left: ${triesLeft - 1}`);

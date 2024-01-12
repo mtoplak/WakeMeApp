@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,26 +7,64 @@ import {
   Alert,
   StyleSheet,
 } from "react-native";
+import Database from "../../database";
+import { router } from "expo-router";
 
-const MathChallenge = () => {
+const MathChallenge: React.FC = () => {
+  const [num1, setNum1] = useState(0);
+  const [num2, setNum2] = useState(0);
   const [answer, setAnswer] = useState("");
   const [triesLeft, setTriesLeft] = useState(3);
 
-  const checkAnswer = () => {
-    const correctAnswer = "3";
+  useEffect(() => {
+    generateMathProblem();
+  }, []);
 
-    if (answer == correctAnswer) {
-      Alert.alert("Congratulations!", "You solved the equation!");
+  const generateRandomNumber = (): number => Math.floor(Math.random() * 12) + 1;
+
+  const generateMathProblem = (): void => {
+    setNum1(generateRandomNumber());
+    setNum2(generateRandomNumber());
+  };
+
+  const checkAnswer = (): void => {
+    const correctAnswer = num1 * num2;
+
+    if (parseInt(answer) === correctAnswer) {
+      Alert.alert("Congratulations!", "You solved the math problem!", [
+        {
+          text: "Continue",
+          onPress: () => {
+            router.push("screens/QuoteScreen");
+          },
+        },
+      ]);
     } else {
       setTriesLeft(triesLeft - 1);
       Alert.alert("Incorrect", `Try again! Tries left: ${triesLeft - 1}`);
       setAnswer("");
+
+      if (triesLeft === 1) {
+        Alert.alert(
+          "Out of Tries",
+          "You failed! Try again tomorrow",
+          [
+            {
+              text: "OK",
+              onPress: async () => {
+                Database.resetStreak();
+                router.back();
+              },
+            },
+          ]
+        );
+      }
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.equationText}>∛(9^2 / log₂(8)) =</Text>
+      <Text style={styles.equationText}>{`${num1} x ${num2} = ?`}</Text>
       <TextInput
         style={styles.input}
         placeholder="Your Answer"
