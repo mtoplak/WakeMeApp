@@ -8,7 +8,6 @@ import {
   Alert,
   StyleSheet,
 } from "react-native";
-import { updateStreakCount } from "../streakLogic";
 import Database from "../../database";
 import QuoteScreen from "../screens/QuoteScreen";
 
