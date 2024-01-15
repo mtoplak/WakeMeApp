@@ -16,7 +16,6 @@ import * as Notification from "expo-notifications";
 
 Notification.setNotificationHandler({
   handleNotification: async (notification) => {
-    //console.log(notification)
     return {
       shouldPlaySound: true,
       shouldSetBadge: true,
@@ -74,7 +73,7 @@ const HomePage = () => {
     // will excute whenever notification recieved on the device
     const subscription = Notification.addNotificationReceivedListener(
       (notification) => {
-        console.log("notification recieved");
+        console.log("notification received");
         console.log(notification);
         console.log(notification.request.content.data.userName);
       }
@@ -83,7 +82,6 @@ const HomePage = () => {
     const responseSubscripion =
       Notification.addNotificationResponseReceivedListener((response) => {
         console.log("notification response");
-        // console.log(response);
         console.log(response.notification.request.content.data);
       });
     return () => {
@@ -108,7 +106,6 @@ const HomePage = () => {
 
     // Check if the specified time has already passed for today
     if (parsedTime < now) {
-      // If yes, schedule for tomorrow
       alarmDate.setDate(now.getDate() + 1);
     }
 
@@ -148,11 +145,8 @@ const HomePage = () => {
 
     // Check if the scroll direction is downward (offsetY is increasing)
     if (offsetY > 0) {
-      // Allow scrolling
       return;
     }
-
-    // Prevent scrolling upward
     scrollViewRef.current!.scrollTo({ x: 0, y: 0, animated: false });
   };
 

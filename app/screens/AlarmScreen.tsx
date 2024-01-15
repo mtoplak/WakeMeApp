@@ -72,6 +72,7 @@ const AlarmScreen = () => {
         style: "cancel",
       },
     ]);
+    Database.resetStreak();
   };
 
   const handleStop = async () => {

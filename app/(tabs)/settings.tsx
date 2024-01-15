@@ -1,3 +1,4 @@
+/*
 import React from "react";
 import { View, Text, Button } from "react-native";
 
@@ -12,3 +13,4 @@ const Settings = () => {
 };
 
 export default Settings;
+*/

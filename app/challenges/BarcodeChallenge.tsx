@@ -95,8 +95,6 @@ const BarcodeChallenge = () => {
   }) => {
     setScanned(true);
     // alert(`Barcode with type ${type} and data ${data} has been scanned!`);
-    // console.log(type);
-    // console.log(data);
     Database.updatePassed(1);
     Database.updateStreak();
     await sound.unloadAsync();

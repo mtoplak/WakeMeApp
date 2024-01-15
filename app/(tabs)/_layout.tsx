@@ -33,6 +33,7 @@ export default () => {
           ),
         }}
       />
+      {/*
       <Tabs.Screen
         name="settings"
         options={{
@@ -44,6 +45,7 @@ export default () => {
           ),
         }}
       />
+      */}
     </Tabs>
   );
 };

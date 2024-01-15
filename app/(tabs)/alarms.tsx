@@ -72,7 +72,6 @@ const Alarms = () => {
         },
       });
 
-      // update notification id
       Database.updateNotificationId(id, identifier);
     }
     read_db();
