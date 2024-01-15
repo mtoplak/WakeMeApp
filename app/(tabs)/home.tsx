@@ -60,7 +60,7 @@ const HomePage = () => {
         return;
       }
 
-      // get pushTokenData after get permission
+      // get pushTokenData after getting permission
       // const pushTokenData = await Notification.getExpoPushTokenAsync({
       //   projectId: Constants?.expoConfig?.extra?.eas?.projectId,
       // });
@@ -75,17 +75,15 @@ const HomePage = () => {
       (notification) => {
         console.log("notification received");
         console.log(notification);
-        console.log(notification.request.content.data.userName);
       }
     );
 
     const responseSubscripion =
       Notification.addNotificationResponseReceivedListener((response) => {
-        console.log("notification response");
-        console.log(response.notification.request.content.data);
+        // console.log("notification response");
+        // console.log(response.notification.request.content.data);
       });
     return () => {
-      // will remove when the component is removed.
       subscription.remove();
       responseSubscripion.remove();
     };
@@ -99,12 +97,10 @@ const HomePage = () => {
   };
 
   const handleSaveAlarm = async () => {
-    // Parse selectedTime to extract hours and minutes
     const parsedTime = new Date(selectedTime);
     const now = new Date();
     let alarmDate = new Date(selectedTime);
 
-    // Check if the specified time has already passed for today
     if (parsedTime < now) {
       alarmDate.setDate(now.getDate() + 1);
     }
@@ -123,7 +119,6 @@ const HomePage = () => {
         title: "ALARM",
         body: "Tap here to deactivate alarm and solve challenge",
         data: {
-          userName: "MAC",
           url: "screens/AlarmScreen",
           time: hours + ":" + minutes,
           challenge: selectedChallenge,
@@ -143,7 +138,6 @@ const HomePage = () => {
   const handleScroll = (event: any) => {
     const offsetY = event.nativeEvent.contentOffset.y;
 
-    // Check if the scroll direction is downward (offsetY is increasing)
     if (offsetY > 0) {
       return;
     }

@@ -76,8 +76,6 @@ const AlarmScreen = () => {
   };
 
   const handleStop = async () => {
-    console.log("Stop button pressed");
-    // Database.updatePassed(1);
     await sound.unloadAsync();
     await Notifications.dismissAllNotificationsAsync();
     await scheduleNewNotification();
@@ -94,7 +92,6 @@ const AlarmScreen = () => {
         title: "ALARM",
         body: "Tap here to deactivate alarm and solve challenge",
         data: {
-          userName: "MAC",
           url: "screens/AlarmScreen",
           time: alarm.hours + ":" + alarm.minutes,
           challenge: alarm.dailyChallenge,

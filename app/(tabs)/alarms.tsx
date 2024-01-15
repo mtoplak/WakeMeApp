@@ -40,9 +40,7 @@ const Alarms = () => {
       const now = new Date();
       let alarmDate = new Date(selectedTime);
 
-      // Check if the specified time has already passed for today
       if (parsedTime < now) {
-        // If yes, schedule for tomorrow
         alarmDate.setDate(now.getDate() + 1);
       }
 
@@ -59,7 +57,6 @@ const Alarms = () => {
           title: "ALARM",
           body: "Tap here to deactivate alarm and solve challenge",
           data: {
-            userName: "MAC",
             url: "screens/AlarmScreen",
             time: hours + ":" + minutes,
             challenge: alarm.dailyChallenge,

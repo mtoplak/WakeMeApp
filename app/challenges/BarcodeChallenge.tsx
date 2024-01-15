@@ -94,8 +94,7 @@ const BarcodeChallenge = () => {
     data: any;
   }) => {
     setScanned(true);
-    // alert(`Barcode with type ${type} and data ${data} has been scanned!`);
-    Database.updatePassed(1);
+    // Alert.alert(`Barcode with type ${type} and data ${data} has been scanned!`);
     Database.updateStreak();
     await sound.unloadAsync();
     Alert.alert("Barcode Scanned", "You have passed the challenge!", [
@@ -105,7 +104,7 @@ const BarcodeChallenge = () => {
           router.push("screens/QuoteScreen");
         },
       },
-    ])
+    ]);
   };
 
   if (hasPermission === null) {

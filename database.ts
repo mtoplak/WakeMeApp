@@ -2,24 +2,13 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase("wakemeapp.db");
 
-const translate_days = (days: any) => {
-  let output = '';
-
-  for (let day of days) {
-    output += day + ',';
-  }
-
-  return output.substring(0, output.length - 1);
-
-};
-
 class Database {
 
   static createTable() {
     console.log('create db');
     db.transaction(tx => {
       tx.executeSql("DROP TABLE IF EXISTS alarm;");
-      tx.executeSql("CREATE TABLE IF NOT EXISTS alarm (id INTEGER PRIMARY KEY NOT NULL, hours TEXT, minutes TEXT, days TEXT, sound TEXT, dailyChallenge TEXT, stoppedSuccessfully INTEGER, active INTEGER, notificationId TEXT);");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS alarm (id INTEGER PRIMARY KEY NOT NULL, hours TEXT, minutes TEXT, days TEXT, sound TEXT, dailyChallenge TEXT, active INTEGER, notificationId TEXT);");
       tx.executeSql("CREATE TABLE IF NOT EXISTS streak (id INTEGER PRIMARY KEY NOT NULL, currentStreak INTEGER, highestStreak INTEGER);");
       tx.executeSql("CREATE TABLE IF NOT EXISTS user (id INTEGER primary key not null, TEXT name, INTEGER streak);");
       this.addStreak();
@@ -29,8 +18,8 @@ class Database {
   static add(hours: any, minutes: any, sound: string, challenge: string, notificationId: string) {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO alarm (hours, minutes, days, sound, dailyChallenge, stoppedSuccessfully, active, notificationId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-        [hours, minutes, 'null', sound, challenge, 0, 1, notificationId]
+        'INSERT INTO alarm (hours, minutes, days, sound, dailyChallenge, active, notificationId) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [hours, minutes, 'null', sound, challenge, 1, notificationId]
       );
     });
   }
@@ -137,13 +126,6 @@ class Database {
     });
   }
 
-  static updatePassed(id: number) {
-    console.log('update passed');
-    db.transaction(tx => {
-      tx.executeSql(`UPDATE alarm SET stoppedSuccessfully=1 WHERE id=${id}`);
-    });
-  }
-
   static getOne(id: any) {
     var query = `SELECT * FROM alarm WHERE id='${id}'`;
     return new Promise((resolve, reject) => db.transaction((tx) => {
@@ -177,18 +159,6 @@ class Database {
     });
   }
 
-  static setDays(days: string, id: any) {
-    console.log('update days');
-    days = translate_days(days);
-
-    console.log(days, id);
-
-    db.transaction(tx => {
-      tx.executeSql(`UPDATE alarm SET days='${days}' WHERE id=${id}`);
-    });
-  }
-
-  // streaks
   static updateStreak() {
     db.transaction(
       (tx) => {

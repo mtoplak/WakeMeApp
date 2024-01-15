@@ -9,7 +9,6 @@ import {
   StyleSheet,
 } from "react-native";
 import Database from "../../database";
-import QuoteScreen from "../screens/QuoteScreen";
 
 const RiddleChallenge = () => {
   const [answer, setAnswer] = useState("");
