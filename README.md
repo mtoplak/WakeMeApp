@@ -5,11 +5,10 @@
 - [x] Schedule, toggle and delete alarm
 - [x] Notifications on alarm
 - [x] Barcode scan challenge
-- [ ] Math challenge
-- [ ] Riddle challenge
-- [ ] Streak counter
-- [ ] Motivational quotes
-
+- [x] Math challenge
+- [x] Riddle challenge
+- [x] Streak counter
+- [x] Motivational quotes
 
 ## Development
 
@@ -20,7 +19,6 @@
 - [Expo CLI](https://docs.expo.dev/more/expo-cli/)
 - [Expo Go](https://expo.dev/client)
 
-
 Install `node_modules` in the root directory.
 
 ```
@@ -30,5 +28,5 @@ yarn install
 Run in the root directory to start the app.
 
 ```
-npx expo start
+npx expo start --go
 ```

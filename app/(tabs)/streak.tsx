@@ -30,11 +30,15 @@ const StreakScreen = () => {
     <View style={styles.container}>
       <View style={styles.streakContainer}>
         {highest > 0 ? (
-          <Text style={styles.highestStreakMessage}>{`Your all-time high is ${highest} days! 🌟 Keep it up!`}</Text>
+          <Text
+            style={styles.highestStreakMessage}
+          >{`Your all-time high is ${highest} days! 🌟 Keep it up!`}</Text>
         ) : (
-          <Text style={styles.highestStreakMessage}>You haven't reached a high enough streak yet. Keep going! 😢</Text>
+          <Text style={styles.highestStreakMessage}>
+            You haven't reached a high enough streak yet. Keep going! 😢
+          </Text>
         )}
-        
+
         {streak > 0 ? (
           <>
             <Text style={styles.streakNumber}>{`${streak}`}</Text>
@@ -45,7 +49,7 @@ const StreakScreen = () => {
         )}
       </View>
       <ImageBackground
-        source={require("../../assets/pictures/fire.gif")}
+        source={require("../../assets/images/fire.gif")}
         style={styles.image}
         resizeMode="contain"
       ></ImageBackground>
