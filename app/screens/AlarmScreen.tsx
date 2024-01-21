@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableHighlight, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { Audio } from "expo-av";
-import SoundContext from "../context/SoundContext";
-import Database from "../../database";
+import Database from "../database";
 import * as Notifications from "expo-notifications";
 const Buzzer = require("../../assets/audio/Buzzer.mp3");
 const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
@@ -14,7 +13,6 @@ const Default = require("../../assets/audio/Default.mp3");
 const AlarmScreen = () => {
   const [sound, setSound] = useState<any>();
   const [alarm, setAlarm] = useState<any>();
-  const { setPlayingSound } = useContext(SoundContext);
 
   useEffect(() => {
     Database.getLatestAlarm((alarm: any) => {
@@ -55,7 +53,6 @@ const AlarmScreen = () => {
       volume: 1,
     });
     setSound(sound);
-    setPlayingSound(sound);
   }
 
   const handleSnooze = () => {

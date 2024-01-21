@@ -25,8 +25,14 @@ Install `node_modules` in the root directory.
 yarn install
 ```
 
-Run in the root directory to start the app.
+Run in the root directory to start the app and scan the QR code with your phone.
 
 ```
 npx expo start --go
 ```
+
+### Screenshots
+
+### Note
+
+This app was tested with iPhone 11 and 15.

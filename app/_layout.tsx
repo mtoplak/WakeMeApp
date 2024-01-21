@@ -3,8 +3,7 @@ import { useEffect } from "react";
 import { router } from "expo-router";
 import * as Notifications from "expo-notifications";
 import { StatusBar } from "expo-status-bar";
-import SoundContextProvider from "./context/SoundContextProvider";
-import Database from "../database";
+import Database from "./database";
 
 function useNotificationObserver() {
   useEffect(() => {
@@ -75,7 +74,7 @@ const StackLayout = () => {
   useAlarmChecker();
 
   return (
-    <SoundContextProvider>
+    <>
       <StatusBar style="dark" />
       <Stack>
         <Stack.Screen
@@ -103,6 +102,24 @@ const StackLayout = () => {
           }}
         />
         <Stack.Screen
+          name="challenges/RiddleChallenge"
+          options={{
+            headerShown: false,
+            headerLeft: () => undefined,
+            headerBackVisible: false,
+            gestureEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name="challenges/MathChallenge"
+          options={{
+            headerShown: false,
+            headerLeft: () => undefined,
+            headerBackVisible: false,
+            gestureEnabled: false,
+          }}
+        />
+        <Stack.Screen
           name="screens/QuoteScreen"
           options={{
             headerShown: false,
@@ -112,7 +129,7 @@ const StackLayout = () => {
           }}
         />
       </Stack>
-    </SoundContextProvider>
+    </>
   );
 };
 

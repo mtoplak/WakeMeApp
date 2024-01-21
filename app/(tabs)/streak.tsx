@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import Database from "../../database";
+import Database from "../database";
 
 const StreakScreen = () => {
   const [streak, setStreak] = useState<number>(0);

@@ -1,5 +1,5 @@
 import { BarCodeScanner } from "expo-barcode-scanner";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,10 +8,10 @@ import {
   Button,
   Alert,
 } from "react-native";
-import Database from "../../database";
+import Database from "../database";
 import { router } from "expo-router";
-import SoundContext from "../context/SoundContext";
 import { Audio } from "expo-av";
+import { useNavigation } from "expo-router";
 const Buzzer = require("../../assets/audio/Buzzer.mp3");
 const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
 const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
@@ -23,16 +23,14 @@ const BarcodeChallenge = () => {
   const [scanned, setScanned] = useState(false);
   const [isClicked, setIsClicked] = useState(true);
   const [sound, setSound] = useState<any>();
-  const { playingSound } = useContext(SoundContext);
+  const navigation = useNavigation();
 
   useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    };
-    playSound(playingSound);
-
-    getBarCodeScannerPermissions();
+    Database.getLatestAlarm((alarm: any) => {
+      if (alarm) {
+        playSound(alarm.sound);
+      }
+    });
 
     return () => {
       if (sound) {
@@ -40,6 +38,15 @@ const BarcodeChallenge = () => {
         sound.unloadAsync();
       }
     };
+  }, []);
+
+  useEffect(() => {
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    };
+
+    getBarCodeScannerPermissions();
   }, []);
 
   useEffect(() => {
@@ -114,9 +121,13 @@ const BarcodeChallenge = () => {
     return <Text>No access to camera</Text>;
   }
   if (remainingTime === 0) {
-    Alert.alert("Time has expired", "Please try again tomorrow.");
+    Alert.alert("Time has expired", "Try again tomorrow.");
     Database.resetStreak();
-    router.back();
+    if (sound) {
+      sound.stopAsync();
+      sound.unloadAsync();
+    }
+    navigation.navigate("(tabs)", { screen: "streak" });
   }
 
   return (

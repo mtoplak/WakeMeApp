@@ -8,7 +8,13 @@ import {
   Alert,
   StyleSheet,
 } from "react-native";
-import Database from "../../database";
+import Database from "../database";
+import { Audio } from "expo-av";
+import { useNavigation } from "expo-router";
+const Buzzer = require("../../assets/audio/Buzzer.mp3");
+const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
+const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
+const Default = require("../../assets/audio/Default.mp3");
 
 const RiddleChallenge = () => {
   const [answer, setAnswer] = useState("");
@@ -22,10 +28,52 @@ const RiddleChallenge = () => {
   });
   const [scrambledWord, setScrambledWord] = useState("");
   const [loading, setLoading] = useState(true);
+  const [sound, setSound] = useState<any>();
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchRandomWord();
   }, []);
+
+  useEffect(() => {
+    Database.getLatestAlarm((alarm: any) => {
+      if (alarm) {
+        playSound(alarm.sound);
+      }
+    });
+
+    return () => {
+      if (sound) {
+        sound.stopAsync();
+        sound.unloadAsync();
+      }
+    };
+  }, []);
+
+  async function playSound(ring: any) {
+    let ringtoneModule;
+
+    switch (ring) {
+      case "Buzzer":
+        ringtoneModule = Buzzer;
+        break;
+      case "Barking Cat":
+        ringtoneModule = Barking_Cat;
+        break;
+      case "Rick Roll":
+        ringtoneModule = Rick_Roll;
+        break;
+      default:
+        ringtoneModule = Default;
+        break;
+    }
+    const { sound } = await Audio.Sound.createAsync(ringtoneModule, {
+      shouldPlay: true,
+      isLooping: true,
+      volume: 1,
+    });
+    setSound(sound);
+  }
 
   const fetchRandomWord = async () => {
     try {
@@ -60,6 +108,10 @@ const RiddleChallenge = () => {
   const checkAnswer = () => {
     if (answer.toLowerCase() === wordData.word.toLowerCase()) {
       Database.updateStreak();
+      if (sound) {
+        sound.stopAsync();
+        sound.unloadAsync();
+      }
       Alert.alert("Congratulations!", "You solved the riddle!", [
         {
           text: "Continue",
@@ -78,7 +130,11 @@ const RiddleChallenge = () => {
           "You failed! Try again tommorow"
         );
         Database.resetStreak();
-        router.back();
+        if (sound) {
+          sound.stopAsync();
+          sound.unloadAsync();
+        }
+        navigation.navigate("(tabs)", { screen: "streak" });
       }
     }
   };

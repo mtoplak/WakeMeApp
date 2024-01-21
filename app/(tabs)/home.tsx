@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker as SelectPicker } from "@react-native-picker/picker";
-import Database from "../../database";
+import Database from "../database";
 import { ScrollView } from "react-native-gesture-handler";
 import * as Notification from "expo-notifications";
 // import Constants from "expo-constants";

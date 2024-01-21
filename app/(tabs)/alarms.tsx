@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Switch,
 } from "react-native";
-import Database from "../../database";
+import Database from "../database";
 import { useFocusEffect } from "expo-router";
 import { RectButton } from "react-native-gesture-handler";
 import { Swipeable } from "react-native-gesture-handler";

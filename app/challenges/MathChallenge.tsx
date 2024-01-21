@@ -7,18 +7,66 @@ import {
   Alert,
   StyleSheet,
 } from "react-native";
-import Database from "../../database";
+import Database from "../database";
 import { router } from "expo-router";
+import { Audio } from "expo-av";
+import { useNavigation } from "expo-router";
+const Buzzer = require("../../assets/audio/Buzzer.mp3");
+const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
+const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
+const Default = require("../../assets/audio/Default.mp3");
 
 const MathChallenge: React.FC = () => {
   const [num1, setNum1] = useState(0);
   const [num2, setNum2] = useState(0);
   const [answer, setAnswer] = useState("");
   const [triesLeft, setTriesLeft] = useState(3);
+  const [sound, setSound] = useState<any>();
+  const navigation = useNavigation();
 
   useEffect(() => {
     generateMathProblem();
   }, []);
+
+  useEffect(() => {
+    Database.getLatestAlarm((alarm: any) => {
+      if (alarm) {
+        playSound(alarm.sound);
+      }
+    });
+
+    return () => {
+      if (sound) {
+        sound.stopAsync();
+        sound.unloadAsync();
+      }
+    };
+  }, []);
+
+  async function playSound(ring: any) {
+    let ringtoneModule;
+
+    switch (ring) {
+      case "Buzzer":
+        ringtoneModule = Buzzer;
+        break;
+      case "Barking Cat":
+        ringtoneModule = Barking_Cat;
+        break;
+      case "Rick Roll":
+        ringtoneModule = Rick_Roll;
+        break;
+      default:
+        ringtoneModule = Default;
+        break;
+    }
+    const { sound } = await Audio.Sound.createAsync(ringtoneModule, {
+      shouldPlay: true,
+      isLooping: true,
+      volume: 1,
+    });
+    setSound(sound);
+  }
 
   const generateRandomNumber = (): number => Math.floor(Math.random() * 12) + 1;
 
@@ -31,6 +79,10 @@ const MathChallenge: React.FC = () => {
     const correctAnswer = num1 * num2;
 
     if (parseInt(answer) === correctAnswer) {
+      if (sound) {
+        sound.stopAsync();
+        sound.unloadAsync();
+      }
       Alert.alert("Congratulations!", "You solved the math problem!", [
         {
           text: "Continue",
@@ -45,19 +97,19 @@ const MathChallenge: React.FC = () => {
       setAnswer("");
 
       if (triesLeft === 1) {
-        Alert.alert(
-          "Out of Tries",
-          "You failed! Try again tomorrow",
-          [
-            {
-              text: "OK",
-              onPress: async () => {
-                Database.resetStreak();
-                router.back();
-              },
+        if (sound) {
+          sound.stopAsync();
+          sound.unloadAsync();
+        }
+        Alert.alert("Out of Tries", "You failed! Try again tomorrow.", [
+          {
+            text: "OK",
+            onPress: async () => {
+              Database.resetStreak();
+              navigation.navigate("(tabs)", { screen: "streak" });
             },
-          ]
-        );
+          },
+        ]);
       }
     }
   };

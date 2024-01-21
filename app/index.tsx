@@ -1,5 +1,5 @@
 import { Redirect } from "expo-router";
-import Database from "../database";
+import Database from "./database";
 
 const StartPage = () => {
   Database.createTable();
