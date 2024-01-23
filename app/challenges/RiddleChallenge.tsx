@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import {
   View,
   Text,
@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import Database from "../database";
 import { Audio } from "expo-av";
-import { useNavigation } from "expo-router";
 const Buzzer = require("../../assets/audio/Buzzer.mp3");
 const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
 const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
