@@ -250,18 +250,19 @@ const styles = StyleSheet.create({
     borderColor: "#BDBDBD",
     borderWidth: 1,
     marginBottom: 20,
-    paddingHorizontal: 15, // Add padding horizontally
-    width: "100%", // Make it take up the full width
-    borderRadius: 8, // Add border radius for a rounded look
+    marginTop: 10,
+    paddingHorizontal: 15,
+    width: "100%",
+    borderRadius: 8,
     color: "#333",
-    backgroundColor: "#F5F5F5", // Set background color
+    backgroundColor: "#F5F5F5",
   },  
   pickerButtonText: {
     color: "white",
     fontSize: 18,
   },
   saveButton: {
-    backgroundColor: "black",
+    backgroundColor: "#1f2129",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",

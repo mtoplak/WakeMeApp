@@ -3,14 +3,20 @@ import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
 
 export default () => {
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: "#1f2129",
+        },
+      }}
+    >
       <Tabs.Screen
         name="home"
         options={{
           tabBarLabel: "Home",
           headerTitle: "Create Alarm",
-          tabBarActiveTintColor: "black",
-          tabBarIcon: ({}) => <Entypo name="home" size={24} color="black" />,
+          tabBarActiveTintColor: "white",
+          tabBarIcon: ({}) => <Entypo name="home" size={24} color="#faf7f9" />,
         }}
       />
       <Tabs.Screen
@@ -18,8 +24,8 @@ export default () => {
         options={{
           tabBarLabel: "My Alarms",
           headerTitle: "My Alarms",
-          tabBarActiveTintColor: "black",
-          tabBarIcon: ({}) => <Ionicons name="alarm" size={24} color="black" />,
+          tabBarActiveTintColor: "white",
+          tabBarIcon: ({}) => <Ionicons name="alarm" size={24} color="white" />,
         }}
       />
       <Tabs.Screen
@@ -27,25 +33,12 @@ export default () => {
         options={{
           tabBarLabel: "My Streak",
           headerTitle: "My Streak Journey",
-          tabBarActiveTintColor: "black",
+          tabBarActiveTintColor: "white",
           tabBarIcon: ({}) => (
-            <FontAwesome5 name="fire" size={24} color="black" />
+            <FontAwesome5 name="fire" size={24} color="white" />
           ),
         }}
       />
-      {/*
-      <Tabs.Screen
-        name="settings"
-        options={{
-          tabBarLabel: "Settings",
-          headerTitle: "Settings",
-          tabBarActiveTintColor: "black",
-          tabBarIcon: ({}) => (
-            <Ionicons name="settings-sharp" size={24} color="black" />
-          ),
-        }}
-      />
-      */}
     </Tabs>
   );
 };

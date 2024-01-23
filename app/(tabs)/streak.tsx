@@ -32,7 +32,7 @@ const StreakScreen = () => {
         {highest > 0 ? (
           <Text
             style={styles.highestStreakMessage}
-          >{`Your all-time high is ${highest} days! 🌟 Keep it up!`}</Text>
+          >{`Your all-time high is ${highest} days!\ Keep it up!`}</Text>
         ) : (
           <Text style={styles.highestStreakMessage}>
             You haven't reached a high enough streak yet. Keep going! 😢
@@ -65,13 +65,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#2d2d2d",
+    //backgroundColor: "#FEF5EA",
   },
   heading: {
     fontSize: 32,
     fontWeight: "bold",
     marginBottom: 20,
-    color: "#FF8C00",
+    color: "#1f2129",
   },
   streakContainer: {
     padding: 20,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 10,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#000000",
     borderStyle: "solid",
     borderColor: "#FF5D2E",
     borderWidth: 2,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#000000",
     textAlign: "center",
     paddingHorizontal: 20,
   },

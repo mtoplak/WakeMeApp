@@ -105,7 +105,7 @@ const AlarmScreen = () => {
 
   return (
     <LinearGradient
-      colors={["#3498db", "#e74c3c"]}
+      colors={["#1f2129", "#f5f2eb"]} 
       style={{
         flex: 1,
         width: "100%",
