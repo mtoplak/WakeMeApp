@@ -125,7 +125,7 @@ const MathChallenge: React.FC = () => {
         onChangeText={(text) => setAnswer(text)}
         value={answer}
       />
-      <Text style={styles.triesText}>{`You are on Try (${
+      <Text style={styles.triesText}>{`You are on try (${
         3 - triesLeft + 1
       }/3)`}</Text>
       <TouchableOpacity style={styles.checkA} onPress={checkAnswer}>

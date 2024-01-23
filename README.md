@@ -33,14 +33,9 @@ npx expo start --go
 
 ### Screenshots
 
-![Screenshot](screenshots/1.png)
-![Screenshot](screenshots/2.png)
-![Screenshot](screenshots/3.png)
-![Screenshot](screenshots/4.png)
-![Screenshot](screenshots/5.png)
-![Screenshot](screenshots/6.png)
-![Screenshot](screenshots/7.png)
-![Screenshot](screenshots/8.png)
+![Set Alarm](screenshots/1.png){ width=30% } ![Alarm List](screenshots/2.png){ width=30% } ![Alarm Ring](screenshots/3.png){ width=30% }
+![Math Challenge](screenshots/4.png){ width=30% } ![Riddle Challenge](screenshots/5.png){ width=30% } ![Barcode Challenge](screenshots/6.png){ width=30% }
+![Quote Screen](screenshots/7.png){ width=30% } ![Streak](screenshots/8.png){ width=30% } ![Streak](screenshots/8.png){ width=30% }
 
 ### Note
 
