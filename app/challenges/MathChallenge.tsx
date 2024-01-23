@@ -116,6 +116,7 @@ const MathChallenge: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.solveText}>{"Solve the equation!"}</Text>
       <Text style={styles.equationText}>{`${num1} x ${num2} = ?`}</Text>
       <TextInput
         style={styles.input}
@@ -125,7 +126,9 @@ const MathChallenge: React.FC = () => {
         onChangeText={(text) => setAnswer(text)}
         value={answer}
       />
-      <Text style={styles.triesText}>{`Try (${triesLeft}/3)`}</Text>
+      <Text style={styles.triesText}>{`You are on Try (${
+        3 - triesLeft + 1
+      }/3)`}</Text>
       <TouchableOpacity style={styles.checkA} onPress={checkAnswer}>
         <Text style={styles.checkAText}>Check Answer</Text>
       </TouchableOpacity>
@@ -142,6 +145,12 @@ const styles = StyleSheet.create({
   },
   equationText: {
     fontSize: 24,
+    marginBottom: 20,
+    textAlign: "center",
+    color: "#333",
+  },
+  solveText: {
+    fontSize: 20,
     marginBottom: 20,
     textAlign: "center",
     color: "#333",

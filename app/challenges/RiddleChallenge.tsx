@@ -146,7 +146,7 @@ const RiddleChallenge = () => {
       ) : (
         <>
           <Text style={styles.hintText}>{`${
-            triesLeft === 1 ? "Hint: " + wordData.hint : "You can do it!"
+            triesLeft === 1 ? "Hint: " + wordData.hint : "Unscramble the letters to solve the riddle!"
           }`}</Text>
           <Text
             style={styles.categoryText}
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   },
   hintText: {
     fontSize: 16,
-    color: "#757575",
+    color: "#333",
     marginBottom: 10,
   },
   categoryText: {
