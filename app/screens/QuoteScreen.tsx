@@ -4,7 +4,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "expo-router";
 
 const QuoteScreen: React.FC = () => {
-  const [quote, setQuote] = useState({ quote: "Loading quote...", author: "" });
+  const [quote, setQuote] = useState({
+    quote: "Loading quote...",
+    author: "Anonymous",
+  });
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -25,9 +28,15 @@ const QuoteScreen: React.FC = () => {
       console.error("Error fetching quote:", error);
 
       if (isError(error)) {
-        setQuote({ quote: error.message, author: "" });
+        setQuote({
+          quote: "Mornings are like nature in spring… humming with the sounds of life and the promise of a fresh new day!",
+          author: "LeAura Alderson",
+        });
       } else {
-        setQuote({ quote: "Error fetching quote", author: "" });
+        setQuote({
+          quote: "Error fetching quote",
+          author: "Anonymous",
+        });
       }
     }
   };
@@ -43,7 +52,7 @@ const QuoteScreen: React.FC = () => {
   return (
     <LinearGradient colors={["#1f2129", "#FF5D2E"]} style={styles.container}>
       <Text style={styles.quoteText}>{quote.quote}</Text>
-      <Text style={styles.authorText}>{quote.author}</Text>
+      <Text style={styles.authorText}>- {quote.author}</Text>
       <TouchableOpacity onPress={redirectToStreakPage} style={styles.buttonContainer}>
         <Text style={styles.buttonText}>Check your streak</Text>
       </TouchableOpacity>
@@ -68,6 +77,8 @@ const styles = StyleSheet.create({
   authorText: {
     color: "white",
     textAlign: "center",
+    fontStyle: "italic",
+    marginTop: 4,
     marginBottom: 24,
   },
   buttonContainer: {
