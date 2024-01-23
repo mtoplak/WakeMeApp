@@ -8,9 +8,8 @@ import {
   StyleSheet,
 } from "react-native";
 import Database from "../database";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { Audio } from "expo-av";
-import { useNavigation } from "expo-router";
 const Buzzer = require("../../assets/audio/Buzzer.mp3");
 const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
 const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
@@ -68,7 +67,7 @@ const MathChallenge: React.FC = () => {
     setSound(sound);
   }
 
-  const generateRandomNumber = (): number => Math.floor(Math.random() * 12) + 1;
+  const generateRandomNumber = (): number => Math.floor(Math.random() * 12) + 2;
 
   const generateMathProblem = (): void => {
     setNum1(generateRandomNumber());
@@ -126,7 +125,7 @@ const MathChallenge: React.FC = () => {
         onChangeText={(text) => setAnswer(text)}
         value={answer}
       />
-      <Text style={styles.triesText}>{`You are on Try (${
+      <Text style={styles.triesText}>{`You are on try (${
         3 - triesLeft + 1
       }/3)`}</Text>
       <TouchableOpacity style={styles.checkA} onPress={checkAnswer}>
@@ -171,7 +170,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   checkA: {
-    backgroundColor: "black",
+    backgroundColor: "#1f2129",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",

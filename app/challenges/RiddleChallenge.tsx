@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import {
   View,
   Text,
@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import Database from "../database";
 import { Audio } from "expo-av";
-import { useNavigation } from "expo-router";
 const Buzzer = require("../../assets/audio/Buzzer.mp3");
 const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
 const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
@@ -95,6 +94,14 @@ const RiddleChallenge = () => {
     } catch (error) {
       console.error("Error fetching random word:", error);
       setLoading(false);
+      setWordData({
+        word: "cactus",
+        hint: "Doesn't need a lot of water",
+        category: "plant",
+        numLetters: 6,
+        numSyllables: 2,
+      });
+      setScrambledWord(shuffleWord("cactus"));
     }
   };
 
@@ -146,7 +153,9 @@ const RiddleChallenge = () => {
       ) : (
         <>
           <Text style={styles.hintText}>{`${
-            triesLeft === 1 ? "Hint: " + wordData.hint : "Unscramble the letters to solve the riddle!"
+            triesLeft === 1
+              ? "Hint: " + wordData.hint
+              : "Unscramble the letters to solve the riddle!"
           }`}</Text>
           <Text
             style={styles.categoryText}
@@ -161,7 +170,7 @@ const RiddleChallenge = () => {
             onChangeText={(text) => setAnswer(text)}
             value={answer}
           />
-          <Text style={styles.triesText}>{`You are on Try (${
+          <Text style={styles.triesText}>{`You are on try (${
             3 - triesLeft + 1
           }/3)`}</Text>
           <TouchableOpacity style={styles.checkA} onPress={checkAnswer}>
@@ -212,7 +221,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   checkA: {
-    backgroundColor: "black",
+    backgroundColor: "#1f2129",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",

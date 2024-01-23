@@ -9,9 +9,8 @@ import {
   Alert,
 } from "react-native";
 import Database from "../database";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { Audio } from "expo-av";
-import { useNavigation } from "expo-router";
 const Buzzer = require("../../assets/audio/Buzzer.mp3");
 const Barking_Cat = require("../../assets/audio/BarkingCat.mp3");
 const Rick_Roll = require("../../assets/audio/RickRoll.mp3");
@@ -181,7 +180,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   checkA: {
-    backgroundColor: "black",
+    backgroundColor: "#1f2129",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",

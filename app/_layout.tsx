@@ -1,6 +1,5 @@
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import { useEffect } from "react";
-import { router } from "expo-router";
 import * as Notifications from "expo-notifications";
 import { StatusBar } from "expo-status-bar";
 import Database from "./database";
