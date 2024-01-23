@@ -8,18 +8,18 @@ class Database {
     console.log('create db');
     db.transaction(tx => {
       tx.executeSql("DROP TABLE IF EXISTS alarm;");  // Remove this line if you want to keep your alarms on app restart
-      tx.executeSql("CREATE TABLE IF NOT EXISTS alarm (id INTEGER PRIMARY KEY NOT NULL, hours TEXT, minutes TEXT, days TEXT, sound TEXT, dailyChallenge TEXT, active INTEGER, notificationId TEXT);");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS alarm (id INTEGER PRIMARY KEY NOT NULL, hours TEXT, minutes TEXT, days TEXT, sound TEXT, dailyChallenge TEXT, active INTEGER, notificationId TEXT, name TEXT);");
       tx.executeSql("CREATE TABLE IF NOT EXISTS streak (id INTEGER PRIMARY KEY NOT NULL, currentStreak INTEGER, highestStreak INTEGER);");
       tx.executeSql("CREATE TABLE IF NOT EXISTS user (id INTEGER primary key not null, TEXT name, INTEGER streak);");
       this.addStreak();
     });
   }
 
-  static add(hours: any, minutes: any, sound: string, challenge: string, notificationId: string) {
+  static add(hours: any, minutes: any, sound: string, challenge: string, notificationId: string, name: string) {
     db.transaction(tx => {
       tx.executeSql(
-        'INSERT INTO alarm (hours, minutes, days, sound, dailyChallenge, active, notificationId) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [hours, minutes, 'null', sound, challenge, 1, notificationId]
+        'INSERT INTO alarm (hours, minutes, days, sound, dailyChallenge, active, notificationId, name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [hours, minutes, 'null', sound, challenge, 1, notificationId, name]
       );
     });
   }

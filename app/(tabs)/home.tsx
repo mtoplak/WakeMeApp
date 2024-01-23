@@ -6,12 +6,14 @@ import {
   StyleSheet,
   Platform,
   Alert,
+  TextInput
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker as SelectPicker } from "@react-native-picker/picker";
 import Database from "../database";
 import { ScrollView } from "react-native-gesture-handler";
 import * as Notification from "expo-notifications";
+import Alarms from "./alarms";
 // import Constants from "expo-constants";
 
 Notification.setNotificationHandler({
@@ -31,6 +33,7 @@ const HomePage = () => {
   const [selectedChallenge, setSelectedChallenge] = useState("Barcode");
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [alarmName, setAlarmName] = useState("");
 
   const soundPickerRef = useRef();
   const challengePickerRef = useRef();
@@ -114,9 +117,10 @@ const HomePage = () => {
     console.log(
       `${alarmDate.toISOString().slice(0, 10)}T${hours}:${minutes}:00`
     );
+
     const identifier = await Notification.scheduleNotificationAsync({
       content: {
-        title: "ALARM",
+        title: alarmName || "ALARM",
         body: "Tap here to deactivate alarm and solve challenge",
         data: {
           url: "screens/AlarmScreen",
@@ -130,7 +134,8 @@ const HomePage = () => {
         date: alarmDate,
       },
     });
-    Database.add(hours, minutes, selectedSound, selectedChallenge, identifier);
+    Database.add(hours, minutes, selectedSound, selectedChallenge, identifier, alarmName);
+    setAlarmName('');
   };
 
   const scrollViewRef = useRef<ScrollView | null>(null);
@@ -152,6 +157,13 @@ const HomePage = () => {
     >
       <View style={styles.container}>
         <View style={styles.centeredContainer}>
+        <Text style={[styles.label, { marginTop: 10 }]}>Enter Alarm Name</Text>
+          <TextInput
+            style={styles.input}
+            value={alarmName}
+            onChangeText={(text) => setAlarmName(text)}
+            placeholder="Type your alarm name here"
+          />
           <Text style={[styles.label, { marginTop: 10 }]}>
             Select Challenge
           </Text>
@@ -233,6 +245,17 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: "center",
   },
+  input: {
+    height: 40,
+    borderColor: "#BDBDBD",
+    borderWidth: 1,
+    marginBottom: 20,
+    paddingHorizontal: 15, // Add padding horizontally
+    width: "100%", // Make it take up the full width
+    borderRadius: 8, // Add border radius for a rounded look
+    color: "#333",
+    backgroundColor: "#F5F5F5", // Set background color
+  },  
   pickerButtonText: {
     color: "white",
     fontSize: 18,
