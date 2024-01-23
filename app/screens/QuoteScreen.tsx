@@ -41,7 +41,7 @@ const QuoteScreen: React.FC = () => {
   };
 
   return (
-    <LinearGradient colors={["#1f2129", "#f5f2eb"]} style={styles.container}>
+    <LinearGradient colors={["#1f2129", "#FF5D2E"]} style={styles.container}>
       <Text style={styles.quoteText}>{quote.quote}</Text>
       <Text style={styles.authorText}>{quote.author}</Text>
       <TouchableOpacity onPress={redirectToStreakPage} style={styles.buttonContainer}>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   quoteText: {
     color: "white",
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 10,
@@ -68,16 +68,20 @@ const styles = StyleSheet.create({
   authorText: {
     color: "white",
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 24,
   },
   buttonContainer: {
-    backgroundColor: "#1f2129",
-    padding: 10,
-    borderRadius: 5,
+    padding: 15,
+    borderRadius: 50,
+    marginTop: 50,
+    borderWidth: 1,
+    borderColor: "white",
+    alignItems: "center",
   },
   buttonText: {
     color: "white",
     fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

@@ -68,7 +68,7 @@ const MathChallenge: React.FC = () => {
     setSound(sound);
   }
 
-  const generateRandomNumber = (): number => Math.floor(Math.random() * 12) + 1;
+  const generateRandomNumber = (): number => Math.floor(Math.random() * 12) + 2;
 
   const generateMathProblem = (): void => {
     setNum1(generateRandomNumber());
