@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   checkA: {
-    backgroundColor: "black",
+    backgroundColor: "#1f2129",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",

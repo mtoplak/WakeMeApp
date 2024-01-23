@@ -67,7 +67,7 @@ const MathChallenge: React.FC = () => {
     setSound(sound);
   }
 
-  const generateRandomNumber = (): number => Math.floor(Math.random() * 12) + 1;
+  const generateRandomNumber = (): number => Math.floor(Math.random() * 12) + 2;
 
   const generateMathProblem = (): void => {
     setNum1(generateRandomNumber());
@@ -115,6 +115,7 @@ const MathChallenge: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.solveText}>{"Solve the equation!"}</Text>
       <Text style={styles.equationText}>{`${num1} x ${num2} = ?`}</Text>
       <TextInput
         style={styles.input}
@@ -124,7 +125,9 @@ const MathChallenge: React.FC = () => {
         onChangeText={(text) => setAnswer(text)}
         value={answer}
       />
-      <Text style={styles.triesText}>{`Try (${triesLeft}/3)`}</Text>
+      <Text style={styles.triesText}>{`You are on Try (${
+        3 - triesLeft + 1
+      }/3)`}</Text>
       <TouchableOpacity style={styles.checkA} onPress={checkAnswer}>
         <Text style={styles.checkAText}>Check Answer</Text>
       </TouchableOpacity>
@@ -145,6 +148,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#333",
   },
+  solveText: {
+    fontSize: 20,
+    marginBottom: 20,
+    textAlign: "center",
+    color: "#333",
+  },
   input: {
     height: 40,
     borderColor: "#BDBDBD",
@@ -161,7 +170,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   checkA: {
-    backgroundColor: "black",
+    backgroundColor: "#1f2129",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",

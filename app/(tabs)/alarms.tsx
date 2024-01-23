@@ -128,9 +128,8 @@ const Alarms = () => {
               {`${item.hours}:${item.minutes}`}
             </Text>
           </View>
-
           <View style={styles.rightContainer}>
-            <Text>{`Alarm name (to do) ${item.id}`}</Text>
+            <Text>{item.name !== "" ? item.name : `Alarm ${item.id}`}</Text>
             <Text>{`Challenge: ${item.dailyChallenge}`}</Text>
             <Text>{`Sound: ${item.sound}`}</Text>
           </View>

@@ -41,13 +41,10 @@ const QuoteScreen: React.FC = () => {
   };
 
   return (
-    <LinearGradient colors={["#3498db", "#e74c3c"]} style={styles.container}>
+    <LinearGradient colors={["#1f2129", "#FF5D2E"]} style={styles.container}>
       <Text style={styles.quoteText}>{quote.quote}</Text>
       <Text style={styles.authorText}>{quote.author}</Text>
-      <TouchableOpacity
-        onPress={redirectToStreakPage}
-        style={styles.buttonContainer}
-      >
+      <TouchableOpacity onPress={redirectToStreakPage} style={styles.buttonContainer}>
         <Text style={styles.buttonText}>Check your streak</Text>
       </TouchableOpacity>
     </LinearGradient>
@@ -57,30 +54,34 @@ const QuoteScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
   },
   quoteText: {
     color: "white",
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
     textAlign: "center",
+    marginBottom: 10,
   },
   authorText: {
     color: "white",
     textAlign: "center",
+    marginBottom: 24,
   },
   buttonContainer: {
-    marginTop: 20,
-    backgroundColor: "black",
-    padding: 10,
-    borderRadius: 5,
+    padding: 15,
+    borderRadius: 50,
+    marginTop: 50,
+    borderWidth: 1,
+    borderColor: "white",
+    alignItems: "center",
   },
   buttonText: {
     color: "white",
     fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
