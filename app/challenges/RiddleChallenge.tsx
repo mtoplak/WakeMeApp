@@ -95,6 +95,14 @@ const RiddleChallenge = () => {
     } catch (error) {
       console.error("Error fetching random word:", error);
       setLoading(false);
+      setWordData({
+        word: "cactus",
+        hint: "Doesn't need a lot of water",
+        category: "plant",
+        numLetters: 6,
+        numSyllables: 2,
+      });
+      setScrambledWord(shuffleWord("cactus"));
     }
   };
 
@@ -146,7 +154,9 @@ const RiddleChallenge = () => {
       ) : (
         <>
           <Text style={styles.hintText}>{`${
-            triesLeft === 1 ? "Hint: " + wordData.hint : "Unscramble the letters to solve the riddle!"
+            triesLeft === 1
+              ? "Hint: " + wordData.hint
+              : "Unscramble the letters to solve the riddle!"
           }`}</Text>
           <Text
             style={styles.categoryText}
