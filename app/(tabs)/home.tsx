@@ -6,14 +6,13 @@ import {
   StyleSheet,
   Platform,
   Alert,
-  TextInput
+  TextInput,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker as SelectPicker } from "@react-native-picker/picker";
 import Database from "../database";
 import { ScrollView } from "react-native-gesture-handler";
 import * as Notification from "expo-notifications";
-import Alarms from "./alarms";
 // import Constants from "expo-constants";
 
 Notification.setNotificationHandler({
@@ -134,8 +133,15 @@ const HomePage = () => {
         date: alarmDate,
       },
     });
-    Database.add(hours, minutes, selectedSound, selectedChallenge, identifier, alarmName);
-    setAlarmName('');
+    Database.add(
+      hours,
+      minutes,
+      selectedSound,
+      selectedChallenge,
+      identifier,
+      alarmName
+    );
+    setAlarmName("");
   };
 
   const scrollViewRef = useRef<ScrollView | null>(null);
@@ -157,13 +163,18 @@ const HomePage = () => {
     >
       <View style={styles.container}>
         <View style={styles.centeredContainer}>
-        <Text style={[styles.label, { marginTop: 10 }]}>Enter Alarm Name</Text>
-          <TextInput
-            style={styles.input}
-            value={alarmName}
-            onChangeText={(text) => setAlarmName(text)}
-            placeholder="Type your alarm name here"
-          />
+          <Text style={[styles.label, { marginTop: 10 }]}>
+            Enter Alarm Name
+          </Text>
+        </View>
+        <TextInput
+          style={styles.inputName}
+          value={alarmName}
+          onChangeText={(text) => setAlarmName(text)}
+          placeholder="Type your alarm name here"
+          placeholderTextColor="#757575"
+        />
+        <View style={styles.centeredContainer}>
           <Text style={[styles.label, { marginTop: 10 }]}>
             Select Challenge
           </Text>
@@ -223,8 +234,9 @@ const HomePage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
+    padding: 20,
+    paddingLeft: 30,
   },
   centeredContainer: {
     flex: 1,
@@ -256,7 +268,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: "#333",
     backgroundColor: "#F5F5F5",
-  },  
+  },
   pickerButtonText: {
     color: "white",
     fontSize: 18,
@@ -272,6 +284,17 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  inputName: {
+    marginTop: 10,
+    height: 40,
+    borderColor: "#BDBDBD",
+    borderWidth: 1,
+    marginBottom: 20,
+    padding: 10,
+    width: "90%",
+    borderRadius: 5,
+    color: "#333",
   },
 });
 

@@ -105,7 +105,7 @@ const AlarmScreen = () => {
 
   return (
     <LinearGradient
-    colors={["#1f2129", "#FF5D2E"]}
+      colors={["#1f2129", "#FF5D2E"]}
       style={{
         flex: 1,
         width: "100%",
@@ -113,7 +113,7 @@ const AlarmScreen = () => {
         alignItems: "center",
         padding: 20,
       }}
-    > 
+    >
       <View style={{ alignItems: "center", marginBottom: 40 }}>
         <Text style={{ fontSize: 80, fontWeight: "bold", color: "white" }}>
           {alarm && `${alarm.hours}:${alarm.minutes}`}

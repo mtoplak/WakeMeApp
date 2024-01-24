@@ -33,15 +33,9 @@ npx expo start --go
 
 ### Screenshots
 
-<img src="screenshots/1.png" alt="Set Alarm" width="30%">
-<img src="screenshots/2.png" alt="Alarm List" width="30%">
-<img src="screenshots/3.png" alt="Alarm Ring" width="30%">
-<img src="screenshots/4.png" alt="Math Challenge" width="30%">
-<img src="screenshots/5.png" alt="Riddle Challenge" width="30%">
-<img src="screenshots/6.png" alt="Barcode Challenge" width="30%">
-<img src="screenshots/7.png" alt="Quote Screen" width="30%">
-<img src="screenshots/8.png" alt="Streak" width="30%">
-<img src="screenshots/8.png" alt="Streak" width="30%">
+<img src="screenshots/1.png" alt="Set Alarm" width="30%"> <img src="screenshots/2.png" alt="Alarm List" width="30%"> <img src="screenshots/3.png" alt="Alarm Ring" width="30%">
+<img src="screenshots/4.png" alt="Math Challenge" width="30%"> <img src="screenshots/5.png" alt="Riddle Challenge" width="30%"> <img src="screenshots/6.png" alt="Barcode Challenge" width="30%">
+<img src="screenshots/7.png" alt="Quote Screen" width="30%"> <img src="screenshots/8.png" alt="Streak" width="30%"> <img src="screenshots/9.png" alt="Streak" width="30%">
 
 ### Note
 
