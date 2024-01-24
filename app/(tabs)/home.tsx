@@ -176,7 +176,7 @@ const HomePage = () => {
         />
         <View style={styles.centeredContainer}>
           <Text style={[styles.label, { marginTop: 10 }]}>
-            Select Challenge
+            Select Time
           </Text>
 
           <DateTimePicker
